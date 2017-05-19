@@ -1,4 +1,4 @@
-# ThisKotlin
+# TryKotlin
 Kotlin Notes
 
 https://kotlinlang.org/
@@ -8,6 +8,7 @@ https://github.com/JetBrains/kotlin
 https://www.kotlincn.net/
 
 https://www.gitbook.com/book/huanglizhuo/kotlin-in-chinese/details   
+
 https://github.com/wangjiegulu/kotlin-for-android-developers-zh/blob/master/SUMMARY.md
 
 -----------
