@@ -9,19 +9,124 @@ package _0_start
 // 主函数
 fun main(args: Array<String>) {
 
-    hi(maxOf(2, 9).toString())
-    hi(getStringLen("xxx").toString())
-    hi(getStringLen2("xxx").toString())
+    _12()
+}
+
+// 12.使用集合
+fun _12() {
+    val items = listOf(1,2,3,4,5)
+
+    // 想迭代区间那样迭代集合
+    for (x in items) {
+        print(x)
+    }
+    hi("")
+
+    // 可以使用 in 判断一个元素是否在集合中
+    hi((1 in items).toString())
+    hi((7 in items).toString())
+}
+
+// 11.区间迭代
+fun _11() {
+
+    // for 里面的变量不用定义，厉害了
+    for(x in 1..5) {
+        hi(x.toString())
+    }
+
+    // step 2，一次走两步，从 1 直接到 3
+    for (x in 1..10 step 2) {
+        print(x)
+    }
+
+    hi("")
+
+    // 9 downTo 1 ，递减区间的表示方法
+    for (x in 9 downTo 1 step 3) {
+        print(x)
+    }
 
 }
 
 
+// 10.使用区间
+fun _10() {
+
+    // 1..10 表示 [1,10] 两边都是闭区间
+    // 使用 in 表示是否在一个区间
+
+    val x = 11
+    val y = 9
+    if (x in 1..y + 1) {
+        hi("x is in 1..y+1")
+    } else {
+        hi("x is not in 1..y+1")
+    }
+
+    val list = listOf("a", "b", "c")
+
+    // lastIndex 最后一个元素的下标，这里是 2
+    hi("list.lastIndex = ${list.lastIndex}")
+
+    if (-1 !in 0..list.lastIndex) {
+        println("-1 is out of range")
+    }
+
+    // list.indices list 元素下表的区间，这里是 0..2
+    hi("list.indices = ${list.indices}")
+
+    hi("list.size = ${list.size}")
+
+    if (list.size !in list.indices) {
+        println("list size is out of valid list indices range too")
+    }
+
+
+}
+
+// 9.使用 when 表达式
+fun whenTry(x: Int) {   // 相当于 Java 的 switch，更简洁
+    when (x) {
+        0 -> println("x is 0")
+        in 1..10 -> println("x is in 1..10")
+        in 10..20 -> println("x is in 1..20")
+        !in 1..100 -> println("x is not in 1..100")
+        else -> println("i do not know")
+    }
+}
+
+// 8.使用 while 循环
+fun _8() {
+    val items = listOf("apple", "banana", "kiwi")
+    var index = 0
+    while (index < items.size) {
+        println("item at $index is ${items[index++]}")
+    }
+}
+
+
 // 7.使用 for 循环
+fun _7() {
+    val items = listOf("java", "android", "kotlin")
+
+    for (i in items) {
+        hi(i)
+    }
+
+    hi("也可以这样")
+
+    for (i in items.indices) {
+        hi(items[i])
+    }
+
+}
+
 
 // 6.使用类型检测及自动类型转换
 
 // Any 相当于 Java 中的 Object
-// is 相当于 instance，不属于是 !is
+// is 相当于 instance，不属于: !is
 
 fun getStringLen(obj: Any): Int? {
     if (obj is String) {
@@ -34,13 +139,13 @@ fun getStringLen(obj: Any): Int? {
 }
 
 // 或者
-fun getStringLen2(obj: Any) :Int? = if(obj !is String) null else obj.length
+fun getStringLen2(obj: Any): Int? = if (obj !is String) null else obj.length
 
 // 甚至
-fun getStringLen3(obj: Any) :Int? {
+fun getStringLen3(obj: Any): Int? {
 
     // 在 && 的左边 obj 自动转型为 String
-    if(obj is String && obj.length > 0) {
+    if (obj is String && obj.length > 0) {
         return obj.length
     }
 
@@ -53,7 +158,7 @@ fun parseInt(str: String): Int? {
     try {
         val x = str.toInt()
         return x
-    } catch (e: NumberFormatException) {
+    } catch (e: Throwable) {
         return null  // 想返回 null 必须使在返回值后面用 ? 标记
     }
 }
