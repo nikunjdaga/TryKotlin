@@ -9,12 +9,84 @@ package _0_start
 // 主函数
 fun main(args: Array<String>) {
 
-    _12()
+    _10()
+}
+
+// 14. 使用字符串
+fun _14() {
+    val str: String = "hello_world"
+
+    println(str[1])
+
+    for (c in str) {
+        print(c + "、")
+    }
+
+    val s = "Hello, world!\n"
+
+    val text = """
+
+
+    for (c in "foo")
+        print(c)\n """
+
+    print(s)
+    println(text.trim())
+
+
+    val text2 = """
+    |Tell me and I forget.
+    |Teach me and I remember.
+    |Involve me and I learn.
+    |(Benjamin Franklin)
+    """.trimMargin()    // 去除换行后 | 及前面的空格
+
+    print(text2)
+
+    val price = """
+    ${s}9.99
+    """
+
+    println(price)
+}
+
+// 13. 使用数组
+
+fun _13() {
+    val items = arrayOf(1, 2, 3)
+
+    // 也可以使用 set(index: Int, value: T)
+    items[2] = 7
+
+    // 遍历
+    for (x in items) {
+        println(x)
+    }
+
+    // items[2] 和 items.get(2) 取的值相同
+    println(items[2] == items.get(2))
+
+    // 创建一个 4 个元素都是 null 的数组
+    val itemsNull = arrayOfNulls<String>(4)
+
+    // 强大的迭代 ！！！
+    itemsNull.forEach {
+        println(it)
+    }
+
+    // 指定元素个数、根据下标创建数组
+    val asc = Array(5, { i -> ((i + 1) * i).toString() })
+
+    asc.forEach {
+        println(it)
+    }
+
+
 }
 
 // 12.使用集合
 fun _12() {
-    val items = listOf(1,2,3,4,5)
+    val items = listOf(1, 2, 3, 4, 5)
 
     // 想迭代区间那样迭代集合
     for (x in items) {
@@ -31,7 +103,7 @@ fun _12() {
 fun _11() {
 
     // for 里面的变量不用定义，厉害了
-    for(x in 1..5) {
+    for (x in 1..5) {
         hi(x.toString())
     }
 
@@ -75,6 +147,10 @@ fun _10() {
 
     // list.indices list 元素下表的区间，这里是 0..2
     hi("list.indices = ${list.indices}")
+
+    for ((index, value) in list.withIndex()) {
+        println("the element at $index is $value")
+    }
 
     hi("list.size = ${list.size}")
 
