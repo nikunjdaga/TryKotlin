@@ -17,12 +17,12 @@
 #### 标签处返回
 
 - ```kotlin
-  fun foo() {
+  fun foo_1() {
       val ints = listOf(1, 2, 3)
       ints.forEach {
           if (it == 1) {
               print(it)
-              return  // 从 foo 函数返回
+              return  // 从 foo_1 函数返回
           }
   
       }
