@@ -1,4 +1,4 @@
-package _0_start
+package _0_getting_start
 
 /**
  * Created by ssyijiu on 2017/5/19.
@@ -19,6 +19,6 @@ fun _1() {
     p.age = 22
 
     // class 用 data 标记输出：Person(name=lxm, age=25)
-    // 如果不用 data 标记输出： _0_start.Person@5e481248
+    // 如果不用 data 标记输出： _0_getting_start.Person@5e481248
     hi(p.toString())
 }

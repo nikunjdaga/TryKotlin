@@ -1,6 +1,6 @@
-package _1_base
+package _1_basics
 
-import _0_start.parseInt
+import _0_getting_start.parseInt
 
 
 /**

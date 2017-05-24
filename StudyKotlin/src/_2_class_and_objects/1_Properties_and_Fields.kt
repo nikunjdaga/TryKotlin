@@ -1,4 +1,4 @@
-package _2_class
+package _2_class_and_objects
 
 /**
  * Created by ssyijiu on 2017/5/23.

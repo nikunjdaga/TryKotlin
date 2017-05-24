@@ -41,4 +41,10 @@
 const val SUBSYSTEM_DEPRECATED: String = "This subsystem is deprecated"
 ```
 #### 惰性初始化属性
+
+- ```kotlin
+  // 不声明 lateinit 的话，必须为 recyclerView 附一个初始值
+  // 这很不方便
+  lateinit var mRecycler: RecyclerView
+  ```
 #### 委托属性
