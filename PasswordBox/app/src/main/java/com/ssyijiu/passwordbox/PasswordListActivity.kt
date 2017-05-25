@@ -1,25 +1,25 @@
 package com.ssyijiu.passwordbox
 
-import android.support.v7.app.AppCompatActivity
-import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import com.ssyijiu.library.MLog
+import android.view.View
+import com.ssyijiu.passwordbox.app.ToolbarActivity
 import com.ssyijiu.passwordbox.bean.PasswordInfo
 import com.ssyijiu.passwordbox.recycleradapter.PasswordAdapter
 
-class PasswordListActivity : AppCompatActivity() {
+class PasswordListActivity : ToolbarActivity() {
+
     lateinit var mRecycler: RecyclerView
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_password_list)
+    override val contentViewResId: Int
+        get() = R.layout.activity_password_list
+
+
+    override fun initContentView(contentView: View) {
+        title = "Password"
         mRecycler = findViewById(R.id.recycler) as RecyclerView
         mRecycler.layoutManager = LinearLayoutManager(this)
         mRecycler.adapter = PasswordAdapter(getData())
-
-        MLog.i(mRecycler)
-
     }
 
     fun getData() = arrayListOf(

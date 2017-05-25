@@ -7,6 +7,7 @@ package com.ssyijiu.passwordbox.bean
  */
 
 data class PasswordInfo(var name: String) {
-    var password: String = ""
+    var account = ""
+    var password = ""
     var updateTime = ""
 }
