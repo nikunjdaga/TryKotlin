@@ -37,5 +37,7 @@ https://github.com/githubwing/GankClient-Kotlin
 
 https://github.com/wuapnjie/PoiShuhui-Kotlin  
 
-https://github.com/nekocode/Kotlin-Android-Template
+https://github.com/nekocode/Kotlin-Android-Template  
+
+https://github.com/Jacksgong/grpc-android-kotlin
 
