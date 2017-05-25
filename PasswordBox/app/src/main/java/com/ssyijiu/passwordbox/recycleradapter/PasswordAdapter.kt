@@ -25,7 +25,7 @@ class PasswordAdapter(var list: ArrayList<PasswordInfo>) : RecyclerView.Adapter<
         return ViewHolder(inflater.inflate(R.layout.item_password, parent, false))
     }
 
-    override fun getItemCount(): Int = list.size
+    override fun getItemCount() = list.size
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 

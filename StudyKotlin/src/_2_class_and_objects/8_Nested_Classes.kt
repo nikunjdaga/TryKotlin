@@ -26,7 +26,7 @@ class OuterClass {
     // 一个类可以嵌套到其他类中
     class Nested {
         fun foo() = 2
-        // 嵌套类不是内部类，不能直接访问外面类的成员
+        // 嵌套类不是内部类，不能直接访问外部类的成员
         // 需要这样
         fun foo2() = OuterClass().bar
     }

@@ -16,22 +16,24 @@ class PasswordListActivity : AppCompatActivity() {
         setContentView(R.layout.activity_password_list)
         mRecycler = findViewById(R.id.recycler) as RecyclerView
         mRecycler.layoutManager = LinearLayoutManager(this)
-        mRecycler.adapter = PasswordAdapter(arrayListOf(
-            PasswordInfo("1234567"),
-            PasswordInfo("1234567"),
-            PasswordInfo("1234567"),
-            PasswordInfo("1234567"),
-            PasswordInfo("1234567"),
-            PasswordInfo("1234567"),
-            PasswordInfo("1234567"),
-            PasswordInfo("1234567"),
-            PasswordInfo("1234567"),
-            PasswordInfo("1234567"),
-            PasswordInfo("1234567"),
-            PasswordInfo("1234567")
-        ))
+        mRecycler.adapter = PasswordAdapter(getData())
 
         MLog.i(mRecycler)
 
     }
+
+    fun getData() = arrayListOf(
+        PasswordInfo("1234567"),
+        PasswordInfo("1234567"),
+        PasswordInfo("1234567"),
+        PasswordInfo("1234567"),
+        PasswordInfo("1234567"),
+        PasswordInfo("1234567"),
+        PasswordInfo("1234567"),
+        PasswordInfo("1234567"),
+        PasswordInfo("1234567"),
+        PasswordInfo("1234567"),
+        PasswordInfo("1234567"),
+        PasswordInfo("1234567")
+    )
 }
