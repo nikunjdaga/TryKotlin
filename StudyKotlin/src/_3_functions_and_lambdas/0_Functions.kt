@@ -12,6 +12,12 @@ fun main(args: Array<String>) {
 
     B().foo()
 
+    val a = arrayOf(1, 2, 3)
+    val list = asList(*a)
+    println(list)
+
+    addY(1)
+
 }
 
 fun default(x: Int = 1, y: String = "", z: Int = 4) {
@@ -29,4 +35,22 @@ class B : A() {
     override fun foo(i: Int) {
         println(i)
     }  // 不能有默认值
+}
+
+
+fun <T> asList(vararg ts: T): List<T> {
+    val result = ArrayList<T>()
+    for (t in ts) // ts is an Array
+        result.add(t)
+    return result
+}
+
+tailrec fun addY(y: Int = 1): Int {
+    if (y == 100) {
+        return y
+    } else {
+        val x = y + 1
+        println(x)
+        return addY(x)
+    }
 }
