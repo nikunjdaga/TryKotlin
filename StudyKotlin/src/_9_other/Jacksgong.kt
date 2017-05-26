@@ -40,9 +40,45 @@ fun main(args: Array<String>) {
     println(lazyValue)  // 执行 doAnything
     println(lazyValue)  // 不执行 doAnything
 
+    val something = Values.FINAL_STATIC_PROPERTY
+    println(something)
+
+    Values.STATIC_PROPERTY = "xxx"
+    println(Values.STATIC_PROPERTY)
+
+    // 智能cast
+//    if (node is Leaf) {
+//        return node.symbol //智能的将node转为Leaf类型，暴露Leaf的变量(symbol)
+//    }
+
+    // 支持 Java8 的各种新特性
+    val numbers = listOf(-42, 17, 13, -9, 12)
+    val nonNegative = numbers.filter { it >= 0 }  // 过滤出元素大于 0 的 list
+    println(nonNegative)
+
+    var rxjava = listOf(1, 2, 3, 4)
+    rxjava = rxjava.map { it * 10 }  // [10, 20, 30, 40]
+    println(rxjava)
+    rxjava = rxjava.filter { it > 20 }  // [30, 40]
+    println(rxjava)
+    rxjava.forEach {
+        print(it)
+        print("、")
+    }
+
+
 }
 
 fun doAnything() {
     println("doAnything")
 }
 
+
+class Values {
+    companion object {
+        // 定义 final static 变量
+        val FINAL_STATIC_PROPERTY: String = "final static property"
+        // 定义 static 变量
+        var STATIC_PROPERTY: String = "static property"
+    }
+}
