@@ -19,28 +19,28 @@ abstract class BaseActivity : AppCompatActivity() {
 
     lateinit protected var mContext: Activity
 
+    protected abstract val mLayoutResId: Int
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        if(this is PasswordListActivity) {
+        if (this is PasswordListActivity) {
             setTheme(R.style.AppTheme)
         }
 
-        val rootView = View.inflate(this, layoutResId, null)
+        val rootView = View.inflate(this, mLayoutResId, null)
         setContentView(rootView)
         mContext = this
 
-        if (intent != null) {
+        intent?.let {
             parseIntent(intent)
         }
+
         initViewAndData(rootView, savedInstanceState)
     }
 
 
     open protected fun parseIntent(intent: Intent) {}
-
-    @get:LayoutRes
-    protected abstract val layoutResId: Int
 
     open protected fun initViewAndData(rootView: View, savedInstanceState: Bundle?) {}
 

@@ -20,7 +20,10 @@ abstract class ToolbarActivity : BaseActivity() {
     lateinit private var mToolbar: Toolbar
     lateinit private var mToolbarTitle: TextView
 
-    override val layoutResId = R.layout.layout_toolbar
+    override val mLayoutResId = R.layout.layout_toolbar
+
+    protected abstract val mTitle: String
+    protected abstract val mContentViewResId: Int
 
     override fun initViewAndData(rootView: View, savedInstanceState: Bundle?) {
         super.initViewAndData(rootView, savedInstanceState)
@@ -30,36 +33,34 @@ abstract class ToolbarActivity : BaseActivity() {
 
         setSupportActionBar(mToolbar)
 
-        if(supportActionBar != null) {
-            // !! 断言
+        supportActionBar?.let {
             supportActionBar!!.setDisplayShowTitleEnabled(true)   // 显示默认 title
             supportActionBar!!.setDisplayShowHomeEnabled(false)   // 去掉默认 icon
+            title = mTitle
         }
 
         val rootLayout = rootView as LinearLayout
-        val contentView = View.inflate(mContext, contentViewResId, rootLayout)
+        val contentView = View.inflate(mContext, mContentViewResId, rootLayout)
 
-        initToolbar()
+        setToolbar()
         initContentView(contentView)
     }
 
-    @get:LayoutRes
-    protected abstract val contentViewResId: Int
 
 
-    protected fun initToolbar() {
-        when (toolBarMode()) {
+    private fun setToolbar() {
+        when (toolbarMode()) {
             ToolbarMode.MODE_BACK -> mToolbar.setNavigationIcon(R.drawable.ic_arrow_left_white)
         }
 
         mToolbar.setNavigationOnClickListener {
-            when (toolBarMode()) {
+            when (toolbarMode()) {
                 ToolbarMode.MODE_BACK -> mContext.onBackPressed()
             }
         }
     }
 
-    protected fun toolBarMode(): Int {
+    open protected fun toolbarMode(): Int {
         return ToolbarMode.MODE_BACK
     }
 

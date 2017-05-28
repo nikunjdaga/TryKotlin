@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import com.ssyijiu.passwordbox.R
 import com.ssyijiu.passwordbox.bean.PasswordInfo
 
@@ -30,6 +31,11 @@ class PasswordAdapter(var list: ArrayList<PasswordInfo>) : RecyclerView.Adapter<
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         var textView: TextView = itemView.findViewById(R.id.textView) as TextView
+        init {
+            itemView.setOnClickListener(View.OnClickListener {
+
+            })
+        }
 
         fun bindData(info: PasswordInfo) {
             textView.text = info.name

@@ -9,14 +9,12 @@ import com.ssyijiu.passwordbox.recycleradapter.PasswordAdapter
 
 class PasswordListActivity : ToolbarActivity() {
 
-    lateinit var mRecycler: RecyclerView
+    lateinit private var mRecycler: RecyclerView
 
-    override val contentViewResId: Int
-        get() = R.layout.activity_password_list
-
+    override val mTitle = "Password"
+    override val mContentViewResId = R.layout.activity_password_list
 
     override fun initContentView(contentView: View) {
-        title = "Password"
         mRecycler = findViewById(R.id.recycler) as RecyclerView
         mRecycler.layoutManager = LinearLayoutManager(this)
         mRecycler.adapter = PasswordAdapter(getData())
