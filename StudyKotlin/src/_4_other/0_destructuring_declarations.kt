@@ -38,9 +38,19 @@ fun main(args: Array<String>) {
     }
     println()
 
-    // 函数返回值可以直接解构
+    // 数据类的直接解构
     val (result, status) = foo()
     println("result = $result,status = $status")
+
+    // 解构的时候不需要的变量使用_
+    val (_, _status) = foo()
+    println("_status = $_status")
+
+
+    // 在 lambda 表达式中解构，看不懂哎
+    map.mapValues { entry -> "${entry.value}!" }
+    map.mapValues { (key, value) -> "$value!" }
+
 
 
 }
