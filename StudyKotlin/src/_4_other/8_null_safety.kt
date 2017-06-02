@@ -32,6 +32,32 @@ fun main(args: Array<String>) {
         item?.let { println(it) } // 输出 A 并忽略 null
     }
 
+    // ?:  当且仅当左侧为空的时候对右侧求职
+    val len3:Int? = b?.length ?: -1  // b 非 null 返回 b.length ，null 返回 -1
+
+    // !! 断言不是 null，如果 b 是 null，直接空指针
+    val len4 = b!!.length
+
+    // 可空的集合
+    val nullableList: List<Int?> = listOf(1, 2, null, 4)
+    val intList: List<Int> = nullableList.filterNotNull()  // 过滤 null
+
+
+}
+
+
+// throw 和 return 都是表达式
+// 这个写法 666
+fun foo(node: Node): String? {
+    val parent = node.getParent(9) ?: return null
+    val name = node.getName("xxx") ?: throw IllegalArgumentException("name expected")
+
+    return ""
+}
+
+class Node {
+    fun getParent(i:Int)  = if(i == 0) null else i
+    fun getName(name:String?) = if(name.equals("xxx")) 1 else null
 }
 
 // 在 Kotlin 中 NullPointerException 的原因

@@ -10,8 +10,13 @@ import android.app.Application
 
 class App : Application() {
 
+    companion object {
+        private var app: App? = null
+    }
+
     override fun onCreate() {
         super.onCreate()
+        app = this
     }
 }
 
