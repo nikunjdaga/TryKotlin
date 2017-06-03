@@ -76,7 +76,7 @@
   // Kotlin 给 URL 实现了一个扩展函数 readText
   // 创建 URL、使用 HttpURLConnection 请求网络、将 InputStream 转换为 String
   // 想想 Java 的代码，蠢哭了
-  
+
   doAsync { // 子线程
 
     	val json = URL(url).readText()
@@ -87,5 +87,94 @@
   // 注意：doAsync、uiThread、toast 都是 Anko 封装的
   ```
 
-- 一切
+- 一切 Kotlin 函数都会返回一个值，如果没有指定返回 Unit。
+
+- DTO (服务器获取的数据)  -> Mapper -> VO (视图显示的数据)
+
+- with 
+
+  ```kotlin
+  data class Person(var name:String,var age:Int) {
+      fun eat() {
+          MLog.i("Person is eating")
+      }
+  }
+
+  val p = Person("lxm",24)
+  with(p) {
+      // with 的作用域内可以直接使用 Persion 的属性和方法
+    	MLog.i("name = $name, age = $age")  // name = lxm, age = 24
+    	eat()  // Person is eating
+  }
   ```
+
+- 操作符重载
+
+  - 一些操作符会和一些函数一一对应，我们重载这个函数，可以改变其对应操作的符的作用
+  - 重载操作符使用关键字 operator
+  - [操作符和函数对应表](https://www.kotlincn.net/docs/reference/operator-overloading.html)
+
+  举一个例子：
+
+  ```kotlin
+  // [] 和 get 对应
+  // list[i] 实际上是调用 list.get(i)
+  // 我们重载 get(i) 这个方法，就可以使用 list[i] 按照我们自己的需求起作用
+  data class ForecastList(val city: String, val country: String,
+                          val dailyForecast:List<Forecast>) {
+      // 重载 get 方法，可以直接使用 ForecastList[i] 了
+      operator fun get(position:Int):Forecast = dailyForecast[position]
+      fun size():Int = dailyForecast.size
+  }
+  ```
+
+  再来一个例子：
+
+  ```kotlin
+  // invoke 对应 ()
+  // 重载操作符，itemClick(forecast) 就调用了 invoke 这个方法
+  interface OnItemClickListener {
+    	operator fun invoke(forecast: Forecast)
+  }
+  ```
+
+  ​
+
+- 扩展函数中的操作符
+
+  ```Kotlin
+  // 为 ViewGroup 扩展一个方法，重载 get
+  operator fun ViewGroup.get(position: Int): View = getChildAt(position)
+
+  // 使用 [] 代替 get
+  val container: ViewGroup = find(R.id.container)
+  val view = container[2]
+  ```
+
+- 扩展属性
+
+  ```kotlin
+  // 给 View 添加一个扩展属性
+  // ctx 返回 context
+  val View.ctx:Context
+      get() = context
+
+  // 写一个 ViewExtensions.kt 完全不用 UIUtils 了
+  ```
+
+- 创建一个匿名内部类
+
+  ```kotlin
+  // 写一个接口
+  interface OnItemClickListener {
+  	operator fun invoke(forecast: Forecast)
+  }
+
+  // 创建这个接口的匿名内部类
+  object : OnItemClickListener {
+    	override fun invoke(forecast: Forecast) {
+      	toast(forecast.date)
+  }
+  ```
+
+  ​

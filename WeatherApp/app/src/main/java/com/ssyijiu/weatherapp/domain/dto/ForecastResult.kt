@@ -1,10 +1,12 @@
-package com.ssyijiu.weatherapp.entries
+package com.ssyijiu.weatherapp.domain.dto
 
 /**
  * Created by ssyijiu on 2017/6/3.
  * Github : ssyijiu
  * Email  : lxmyijiu@163.com
  */
+
+// DTO
 
 data class ForecastResult(val city: City, val list: List<Forecast>)
 

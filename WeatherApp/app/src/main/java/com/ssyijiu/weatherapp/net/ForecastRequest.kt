@@ -1,7 +1,7 @@
 package com.ssyijiu.weatherapp.net
 
 import com.google.gson.Gson
-import com.ssyijiu.weatherapp.entries.ForecastResult
+import com.ssyijiu.weatherapp.domain.dto.ForecastResult
 import java.net.URL
 
 /**
@@ -10,7 +10,8 @@ import java.net.URL
  * Email  : lxmyijiu@163.com
  */
 
-class Request {
+// 请求网络，获取 DTO
+class ForecastRequest(val zipCode:String){
 
     companion object {
 
@@ -20,7 +21,7 @@ class Request {
         private val COMPLETE_URL = "$URL&APPID=$APP_ID&q="
     }
 
-    fun execute(zipCode: String): ForecastResult {
+    fun request(): ForecastResult {
         // request json
         val forecastJsonStr = URL(COMPLETE_URL + zipCode).readText()
         // json to bean
