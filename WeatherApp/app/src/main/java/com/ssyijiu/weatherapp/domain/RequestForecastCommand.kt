@@ -10,7 +10,7 @@ import com.ssyijiu.weatherapp.net.ForecastRequest
  */
 
 
-class RequestForecastCommand(val zipCode: String) : Command<ForecastList> {
+class RequestForecastCommand(private val zipCode: String) : Command<ForecastList> {
 
     override fun execute(): ForecastList {
 

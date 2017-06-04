@@ -12,9 +12,9 @@ data class ForecastList(val city: String, val country: String,
                         val dailyForecast: List<Forecast>) {
 
     // 重载 get 方法
-    operator fun get(position: Int): Forecast = dailyForecast[position]
+    operator fun get(position: Int) = dailyForecast[position]
 
-    fun size(): Int = dailyForecast.size
+    fun size() = dailyForecast.size
 }
 
 data class Forecast(val date: String, val description: String, val high: Int,
