@@ -9,7 +9,7 @@ https://www.kotlincn.net/
 
 https://www.gitbook.com/book/huanglizhuo/kotlin-in-chinese/details   
 
-https://github.com/wangjiegulu/kotlin-for-android-developers-zh/blob/master/SUMMARY.md   
+https://wangjiegulu.gitbooks.io/kotlin-for-android-developers-zh/content/  
 
 https://panxl6.gitbooks.io/kotlin-in-action-in-chinese/content/welcome.html
 
