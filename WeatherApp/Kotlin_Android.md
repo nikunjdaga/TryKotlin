@@ -266,6 +266,8 @@
   }
   ```
 
+- 标准委托（还未用到，先占个坑）
+
 - 自定义委托属性
 
   ```kotlin
@@ -308,4 +310,89 @@
   ```
 
   ​
+
+  - 使用 Kotlin 简化 SqlLite 操作
+
+    ```kotlin
+    compile "org.jetbrains.anko:anko-sqlite:$anko_version"
+    ```
+
+  - 定义表：
+
+    ```kotlin
+    object CityForecastTable {
+        val NAME = "CityForecast"
+        val ID = "_id"
+        val CITY = "city"
+        val COUNTRY = "country"
+    }
+    ```
+
+  - 实现 SqliteOpenHelper
+
+    ```kotlin
+    // 继承 ManagedSQLiteOpenHelper
+    class ForecastDbHelper() : ManagedSQLiteOpenHelper(
+        App.instance,                 // context
+        ForecastDbHelper.DB_NAME,     // 数据库名称
+        null,                         // 游标工厂
+        ForecastDbHelper.DB_VERSION   // 数据库版本
+    ) {
+
+        override fun onCreate(db: SQLiteDatabase) {
+
+            // 创建表
+            db.createTable(CityForecastTable.NAME, // 表名
+                true, // true 创建之前检查这个表是否存在
+                
+                // CityForecastTable.ID：列名
+                // INTEGER：SqlType 类型，用来描述列的数据类型
+                // 其他的 SqlType 还有 NULL、REAL、TEXT、BLOB
+                // PRIMARY_KEY：SqlTypeModifier 类型，用来描述列的特性
+                // 其他的 NOT_NULL、AUTOINCREMENT、UNIQUE
+                // SqlType 和 SqlTypeModifier 可以用 + 链接 (操作符重载)
+                           
+                Pair(CityForecastTable.ID, INTEGER + PRIMARY_KEY),   // 列
+                Pair(CityForecastTable.CITY, TEXT),
+                Pair(CityForecastTable.COUNTRY, TEXT)
+
+            db.createTable(DayForecastTable.NAME, true,
+                // Pair 的重载函数
+                DayForecastTable.ID to INTEGER + PRIMARY_KEY + AUTOINCREMENT,
+                DayForecastTable.DATE to INTEGER,
+                DayForecastTable.DESCRIPTION to TEXT,
+                DayForecastTable.HIGH to INTEGER,
+                DayForecastTable.LOW to INTEGER,
+                DayForecastTable.ICON_URL to TEXT,
+                DayForecastTable.CITY_ID to INTEGER)
+        }
+
+      
+        // 数据库升级时调用
+        override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
+            // 删除表，然后重建
+            // 注意：这样处理数据库升级是不正确的 ！
+    		db.dropTable(CityForecastTable.NAME, true)
+        	db.dropTable(DayForecastTable.NAME, true)
+        	onCreate(db)
+        }
+
+      
+        // static 定义一些长量
+        companion object {
+            val DB_NAME = "forecast.db"
+            val DB_VERSION = 1
+
+            // ForecastDbHelper 单例，懒加载，线程安全
+            val instance: ForecastDbHelper by lazy { ForecastDbHelper() }
+        }
+    }
+    ```
+
+  - 一些集合
+
+    - **Iterable**：所有集合的父类，我们可以遍历的集合都是实现了这个接口
+    - **MutableIterable**：一个支持遍历的同时可以执行删除的 Iterable
+    - **Collection**：这个类相是一个范性集合，我们通过函数访问可以返回集合的 size、是否为空、是否包含一个或者一些 item，这个集合的所有方法提供查询
+    - **MutableCollection**：一个支持增加和删除item的 Collection，它提供了额外的函数，比如`add`、`remove`、`clear` 等等
 
