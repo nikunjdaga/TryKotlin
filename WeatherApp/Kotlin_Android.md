@@ -32,7 +32,7 @@
   toast("Kotlin",Toast.LENGTH_LONG)
   ```
 
-- String 可以数组那样访问和迭代
+- String 可以像数组那样访问和迭代
 
   ```kotlin
   val s = "Example"
@@ -311,153 +311,234 @@
 
   ​
 
-  - 使用 Kotlin 简化 SqlLite 操作
+- 使用 Kotlin 简化 SqlLite 操作
 
-    ```kotlin
-    compile "org.jetbrains.anko:anko-sqlite:$anko_version"
-    ```
+  ```kotlin
+  compile "org.jetbrains.anko:anko-sqlite:$anko_version"
+  ```
 
-  - 定义表：
-
-    ```kotlin
-    object CityForecastTable {
-        val NAME = "CityForecast"
-        val ID = "_id"
-        val CITY = "city"
-        val COUNTRY = "country"
-    }
-    ```
-
-  - 实现 SqliteOpenHelper
-
-    ```kotlin
-    // 继承 ManagedSQLiteOpenHelper
-    class ForecastDbHelper() : ManagedSQLiteOpenHelper(
-        App.instance,                 // context
-        ForecastDbHelper.DB_NAME,     // 数据库名称
-        null,                         // 游标工厂
-        ForecastDbHelper.DB_VERSION   // 数据库版本
-    ) {
-
-        override fun onCreate(db: SQLiteDatabase) {
-
-            // 创建表
-            db.createTable(CityForecastTable.NAME, // 表名
-                true, // true 创建之前检查这个表是否存在
-                
-                // CityForecastTable.ID：列名
-                // INTEGER：SqlType 类型，用来描述列的数据类型
-                // 其他的 SqlType 还有 NULL、REAL、TEXT、BLOB
-                // PRIMARY_KEY：SqlTypeModifier 类型，用来描述列的特性
-                // 其他的 NOT_NULL、AUTOINCREMENT、UNIQUE
-                // SqlType 和 SqlTypeModifier 可以用 + 链接 (操作符重载)
-                           
-                Pair(CityForecastTable.ID, INTEGER + PRIMARY_KEY),   // 列
-                Pair(CityForecastTable.CITY, TEXT),
-                Pair(CityForecastTable.COUNTRY, TEXT)
-
-            db.createTable(DayForecastTable.NAME, true,
-                // Pair 的重载函数
-                DayForecastTable.ID to INTEGER + PRIMARY_KEY + AUTOINCREMENT,
-                DayForecastTable.DATE to INTEGER,
-                DayForecastTable.DESCRIPTION to TEXT,
-                DayForecastTable.HIGH to INTEGER,
-                DayForecastTable.LOW to INTEGER,
-                DayForecastTable.ICON_URL to TEXT,
-                DayForecastTable.CITY_ID to INTEGER)
-        }
-
-      
-        // 数据库升级时调用
-        override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
-            // 删除表，然后重建
-            // 注意：这样处理数据库升级是不正确的 ！
-    		db.dropTable(CityForecastTable.NAME, true)
-        	db.dropTable(DayForecastTable.NAME, true)
-        	onCreate(db)
-        }
-
-      
-        // static 定义一些长量
-        companion object {
-            val DB_NAME = "forecast.db"
-            val DB_VERSION = 1
-
-            // ForecastDbHelper 单例，懒加载，线程安全
-            val instance: ForecastDbHelper by lazy { ForecastDbHelper() }
-        }
-    }
-    ```
-
-  - 一些集合
-
-    - **Iterable**：所有集合的父类，我们可以遍历的集合都是实现了这个接口
-    - **MutableIterable**：一个支持遍历的同时可以执行删除的 Iterable
-    - **Collection**：这个类相是一个范性集合，我们通过函数访问可以返回集合的 size、是否为空、是否包含一个或者一些 item，这个集合的所有方法提供查询
-    - **MutableCollection**：一个支持增加和删除 item 的 Collection，它提供了额外的函数，比如`add`、`remove`、`clear` 等等
-    - **List**：可能是最流行的集合，有序
-    - **MutableList**：一个支持增加和删除 item 的 List
-    - **Set**：一个无序并不支持重复 item 的集合
-    - **MutableSet**：一个支持增加和删除 item 的 Set
-    - **Map**：一个 key-value 对的 collection，key 在 map 中是唯一的
-    - **MutableMap**：一个支持增加和删除 item 的 map
-
-  - 总数操作符
-
-    ```kotlin
-        val list = listOf(1, 2, 3, 4, 5, 6)
-
-        // any 集合中只要有一个元素符合条件返回 true，都不符合返回 false
-        println(list.any { it % 2 == 0 })   // true
-        println(list.any { it > 10 })       // false
+  ​
 
 
-        // all，集合中所有的元素都符合条件返回 true，否则返回 false
-        println(list.all { it % 2 == 0 })  // false
-        println(list.all { it < 10 })      // true
+- 定义表：
 
-        // count，计算集合中符合条件的元素个数
-        println(list.count { it % 2 == 0 })  // 3
+  ```kotlin
+  object CityForecastTable {
+      val NAME = "CityForecast"
+      val ID = "_id"
+      val CITY = "city"
+      val COUNTRY = "country"
+  }
+  ```
 
-        // fold，给定初始值，按照公式计算集合中每个元素的计算一遍
-        // total 初始值 4，4 + 1 + 2 + 3 + 4 + 5 + 6 = 25
-        println(list.fold(4) { init, next -> init + next })
+
+- 实现 SqliteOpenHelper
+
+ ```kotlin
+ // 继承 ManagedSQLiteOpenHelper
+ class ForecastDbHelper() : ManagedSQLiteOpenHelper(
+ App.instance,                 // context
+ ForecastDbHelper.DB_NAME,     // 数据库名称
+ null,                         // 游标工厂
+ ForecastDbHelper.DB_VERSION   // 数据库版本
+ ) {
+
+     override fun onCreate(db: SQLiteDatabase) {
+
+         // 创建表
+         db.createTable(CityForecastTable.NAME, // 表名
+         true, // true 创建之前检查这个表是否存在
+
+         // CityForecastTable.ID：列名
+         // INTEGER：SqlType 类型，用来描述列的数据类型
+         // 其他的 SqlType 还有 NULL、REAL、TEXT、BLOB
+         // PRIMARY_KEY：SqlTypeModifier 类型，用来描述列的特性
+         // 其他的 NOT_NULL、AUTOINCREMENT、UNIQUE
+         // SqlType 和 SqlTypeModifier 可以用 + 链接 (操作符重载)
+
+         Pair(CityForecastTable.ID, INTEGER + PRIMARY_KEY),   // 列
+         Pair(CityForecastTable.CITY, TEXT),
+         Pair(CityForecastTable.COUNTRY, TEXT)
+
+         db.createTable(DayForecastTable.NAME, true,
+         // Pair 的重载函数
+         DayForecastTable.ID to INTEGER + PRIMARY_KEY + AUTOINCREMENT,
+         DayForecastTable.DATE to INTEGER,
+         DayForecastTable.DESCRIPTION to TEXT,
+         DayForecastTable.HIGH to INTEGER,
+         DayForecastTable.LOW to INTEGER,
+         DayForecastTable.ICON_URL to TEXT,
+         DayForecastTable.CITY_ID to INTEGER)
+     }
+
+                  // 数据库升级时调用
+     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
+         // 删除表，然后重建
+         // 注意：这样处理数据库升级是不正确的 ！
+         db.dropTable(CityForecastTable.NAME, true)
+         db.dropTable(DayForecastTable.NAME, true)
+         onCreate(db)
+     }
+
+                        // static 定义一些长量
+     companion object {
+         val DB_NAME = "forecast.db"
+         val DB_VERSION = 1
+
+         // ForecastDbHelper 单例，懒加载，线程安全
+         val instance: ForecastDbHelper by lazy { ForecastDbHelper() }
+     }
+ }
+ ```
 
 
-        // foldRight，与fold一样，但是顺序是从最后一项到第一项
-        // 2 * 6 * 5 * 4 * 3 * 2 * 1 = 1440
-        println(list.foldRight(2) { init, next -> init * next })
 
-        // forEach，遍历所有的元素，并给出指定操作
-        list.forEach {
-            print("$it 、")  // 1 、2 、3 、4 、5 、6 、
-        }
-        println()
 
-        // max，返回最大的一项
-        println(list.max())  // 6
+- 一些集合
 
-        // maxBy，根据给定的函数返回最大的一项
-        println(list.maxBy { -it })   // 1, 最大的一项是 -1
+-  **Iterable**：所有集合的父类，我们可以遍历的集合都是实现了这个接口
 
-        // min，返回最小的一项
-        println(list.min())  // 1
+-  **MutableIterable**：一个支持遍历的同时可以执行删除的 Iterable
 
-        // minBy，根据给定的函数返回最小的一项
-        println(list.minBy { -it })   // 6, 最小的一项是 -6
+-  **Collection**：这个类相是一个范性集合，我们通过函数访问可以返回集合的 size、是否为空、是否包含一个或者一些 item，这个集合的所有方法提供查询
 
-        // none，没有任何元素符合条件返回 true，否则返回 false
-        println(list.none { it % 7 == 0 })  // true
+-  **MutableCollection**：一个支持增加和删除 item 的 Collection，它提供了额外的函数，比如`add`、`remove`、`clear` 等等
 
-        // reduce，与 fold 一样，初始值为永远为 0
-        println(list.reduce { init, next -> init + next })  // 21
+-  **List**：可能是最流行的集合，有序
 
-        // reduceRight，与 foldRight 一样，初始值为永远为 0
-        println(list.reduceRight { init, next -> init * next })  // 720
+-  **MutableList**：一个支持增加和删除 item 的 List
 
-        // sumBy，每个元素经过函数计算后，累加求和
-        println(list.sumBy { it % 2 })  // 3
-    ```
+-  **Set**：一个无序并不支持重复 item 的集合
 
-    ​
+-  **MutableSet**：一个支持增加和删除 item 的 Set
 
+-  **Map**：一个 key-value 对的 collection，key 在 map 中是唯一的
+
+-  **MutableMap**：一个支持增加和删除 item 的 map
+
+- 总数操作符
+
+  ```kotlin
+   val list = listOf(1, 2, 3, 4, 5, 6)
+
+   // any 集合中只要有一个元素符合条件返回 true，都不符合返回 false
+   println(list.any { it % 2 == 0 })   // true
+   println(list.any { it > 10 })       // false
+
+   // all，集合中所有的元素都符合条件返回 true，否则返回 false
+   println(list.all { it % 2 == 0 })  // false
+   println(list.all { it < 10 })      // true
+
+   // count，计算集合中符合条件的元素个数
+   println(list.count { it % 2 == 0 })  // 3
+
+   // fold，给定初始值，按照公式计算集合中每个元素的计算一遍
+   // total 初始值 4，4 + 1 + 2 + 3 + 4 + 5 + 6 = 25
+   println(list.fold(4) { init, next -> init + next })
+
+   // foldRight，与fold一样，但是顺序是从最后一项到第一项
+   // 2 * 6 * 5 * 4 * 3 * 2 * 1 = 1440
+   println(list.foldRight(2) { init, next -> init * next })
+
+   // forEach，遍历所有的元素，并给出指定操作
+   list.forEach {
+       print("$it 、")  // 1 、2 、3 、4 、5 、6 、
+   }
+   println()
+
+   // max，返回最大的一项
+   println(list.max())  // 6
+
+   // maxBy，根据给定的函数返回最大的一项
+   println(list.maxBy { -it })   // 1, 最大的一项是 -1
+
+   // min，返回最小的一项
+   println(list.min())  // 1
+
+   // minBy，根据给定的函数返回最小的一项
+   println(list.minBy { -it })   // 6, 最小的一项是 -6
+
+   // none，没有任何元素符合条件返回 true，否则返回 false
+   println(list.none { it % 7 == 0 })  // true
+
+   // reduce，与 fold 一样，初始值为永远为 0
+   println(list.reduce { init, next -> init + next })  // 21
+
+   // reduceRight，与 foldRight 一样，初始值为永远为 0
+   println(list.reduceRight { init, next -> init * next })  // 720
+
+   // sumBy，每个元素经过函数计算后，累加求和
+   println(list.sumBy { it % 2 })  // 3
+  ```
+
+  ​
+
+
+
+
+- 过滤操作符
+
+  ```kotlin
+  val list = listOf(1, 2, 3, 4, 5, 6)
+
+  // dorp，去掉前 n 个元素
+  println(list.drop(4))  // [5, 6]
+
+  // dropWhile，从第一个元素开始，去掉截止到第一个不符合条件的元素
+  println(list.dropWhile { it < 4 })       // [4, 5, 6]
+
+  // dropLastWhile，和 dropWhile 一样，不过是从最后一个元素开始
+  println(list.dropLastWhile { it > 4 })   // [1, 2, 3, 4]
+
+  // filter，保留所有符合条件的元素，去掉其他元素
+  println(list.filter { it % 2 == 0 })     // [2, 4, 6]
+
+  // filterNot，去掉所有符合条件的元素
+  println(list.filterNot { it % 2 == 0 })  // [1, 3, 5]
+
+  // filterNotNull, 去掉所有 null
+  val listWithNull = listOf(1, null, 3, null, 5, 6)
+  println(listWithNull.filterNotNull())    // [1, 3, 5, 6]
+
+  // slice，保留 index 区间内的元素
+  // 保留 [1,2,3] index
+  println(list.slice(1..3))            // [2, 3, 4]
+  // list 也是一个区间，保留 [1,2,4] index
+  println(list.slice(listOf(1, 3, 4))) // [2, 4, 5]
+
+  // take，保留从第一个元素开始的 n 个元素
+  println(list.take(2))                // [1, 2]
+
+  // takeLast，保留从最后一个开始的 n 个元素
+  println(list.takeLast(2))            // [5, 6]
+
+  // takeWhile，从第一个元素开始，保留截止到第一个不符合条件的元素
+  println(list.takeWhile { it < 3 })   // [1, 2]
+
+  // 当然，还有 takeLastWhile , take 和 drop 刚好相反，一个保留一个去掉
+  ```
+
+  ​
+
+- 映射操作符
+
+  ```kotlin
+  val list = listOf(1, 2, 3, 4, 5, 6)
+
+  // flatMap，遍历所有元素，为每一个元素创建一个集合，合并集合
+  println(list.flatMap { listOf(it, it + 1) })  // [1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7]
+
+  // groupBy，根据函数给 list 分组，最后保存到 map 中
+  val map = list.groupBy { if (it % 2 == 0) "even" else "odd" }
+  println(map)         // {odd=[1, 3, 5], even=[2, 4, 6]}
+  println(map["even"]) // [2, 4, 6]
+  println(map["odd"])  // [1, 3, 5]
+
+  // map，将集合中每个元素进行变换组成新的集合
+  println(list.map { it * 2 })  // [2, 4, 6, 8, 10, 12]
+
+  // mapIndexed，比 map 多了一个 index 参数，可以使用 index 参与变换
+  println(list.mapIndexed { index, it -> index * it })   // [0, 2, 6, 12, 20, 30]
+  ```
+
+  ​
