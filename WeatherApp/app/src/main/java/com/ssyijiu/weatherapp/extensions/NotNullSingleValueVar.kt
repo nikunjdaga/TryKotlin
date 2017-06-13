@@ -6,7 +6,7 @@ import kotlin.reflect.KProperty
 
 /**
  * Created by ssyijiu on 2017/6/4.
- * Github : ssyijiu
+ * GitHub : ssyijiu
  * Email  : lxmyijiu@163.com
  */
 

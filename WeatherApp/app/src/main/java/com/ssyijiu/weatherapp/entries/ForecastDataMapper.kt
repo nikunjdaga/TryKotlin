@@ -1,33 +1,34 @@
-package com.ssyijiu.weatherapp.domain
+package com.ssyijiu.weatherapp.entries
 
-import com.ssyijiu.weatherapp.domain.dto.Forecast
-import com.ssyijiu.weatherapp.domain.dto.ForecastResult
-import com.ssyijiu.weatherapp.domain.vo.ForecastList
+import com.ssyijiu.weatherapp.entries.dto.ForecastDTO
+import com.ssyijiu.weatherapp.entries.dto.ForecastResultDTO
+import com.ssyijiu.weatherapp.entries.vo.ForecastListVO
+import com.ssyijiu.weatherapp.entries.vo.ForecastVO
 import java.text.DateFormat
 import java.util.*
-import com.ssyijiu.weatherapp.domain.vo.Forecast as ModelForecast
 
 /**
  * Created by ssyijiu on 2017/6/3.
- * Github : ssyijiu
+ * GitHub : ssyijiu
  * Email  : lxmyijiu@163.com
+ *
+ * 将 DTO 转换为 VO
  */
 
-// ForecastRequest -> ForecastList
 
 class ForecastDataMapper {
 
-    fun convertFromDataModel(forecast: ForecastResult): ForecastList {
-        return ForecastList(forecast.city.name, forecast.city.country,
+    fun convertFromDataModel(forecast: ForecastResultDTO): ForecastListVO {
+        return ForecastListVO(forecast.city.name, forecast.city.country,
             convertForecastListToDomain(forecast.list))
     }
 
-    private fun convertForecastListToDomain(list: List<Forecast>): List<ModelForecast> {
+    private fun convertForecastListToDomain(list: List<ForecastDTO>): List<ForecastVO> {
         return list.map { convertForecastItemToDomain(it) }
     }
 
-    private fun convertForecastItemToDomain(forecast: Forecast): ModelForecast {
-        return ModelForecast(convertDate(forecast.dt),
+    private fun convertForecastItemToDomain(forecast: ForecastDTO): ForecastVO {
+        return ForecastVO(convertDate(forecast.dt),
             forecast.weather[0].description, forecast.temp.max.toInt(),
             forecast.temp.min.toInt(), generateIconUrl(forecast.weather[0].icon))
     }

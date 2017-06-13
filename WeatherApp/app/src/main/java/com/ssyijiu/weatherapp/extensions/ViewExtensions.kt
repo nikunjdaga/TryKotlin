@@ -5,7 +5,7 @@ import android.view.View
 
 /**
  * Created by ssyijiu on 2017/6/3.
- * Github : ssyijiu
+ * GitHub : ssyijiu
  * Email  : lxmyijiu@163.com
  */
 

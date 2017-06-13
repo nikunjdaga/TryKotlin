@@ -210,7 +210,7 @@
       }
   }
                           
-  // 5. 在 Kotlin 中，函数式接口可以直接定义成一个函数
+  // 5. 在 Kotlin 中，函数式接口可以直接定义成一个 lambda
   // 函数名 listener 参数 View 返回值 Unit
   fun setOnClickListener(listener: (View) -> Unit)
                           
@@ -231,10 +231,57 @@
 
 
 
-- 扩展函数
+- 创建 Adapter
 
   ```kotlin
-  // 声明一个扩展函数，函数名：code，参数：无，返回值：Unit
+
+  // 注意这里 val itemClick: (ForecastVO) -> Unit，itemClick 的类型实际是一个 lambda 表达式
+  class ForecastListAdapter(val datas: ForecastListVO, val itemClick: (ForecastVO) -> Unit) : RecyclerView.Adapter<ForecastListAdapter.ViewHolder>() {
+
+      override fun getItemCount() = datas.size()
+
+      override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+
+          val view = LayoutInflater.from(parent.ctx)
+              .inflate(R.layout.item_forecast, parent, false)
+          return ViewHolder(view, itemClick)
+      }
+
+      override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+
+          holder.bindForecast(datas[position])
+      }
+
+
+      class ViewHolder(itemView: View, val itemClick: (ForecastVO) -> Unit) :
+          RecyclerView.ViewHolder(itemView) {
+
+          fun bindForecast(forecast: ForecastVO) {
+
+              with(forecast) {
+                  Picasso.with(itemView.ctx).load(iconUrl).into(itemView.icon)
+                  itemView.date.text = date
+                  itemView.description.text = description
+                  itemView.maxTemperature.text = high.toString()
+                  itemView.minTemperature.text = low.toString()
+                  itemView.setOnClickListener { itemClick(this) }
+              }
+          }
+      }
+  }
+
+  // 使用这个 adapter
+  rvForecastList.adapter = ForecastListAdapter(result) {
+  	toast(it.date)
+  }
+  ```
+
+  ​
+
+- 扩展语言
+
+  ```kotlin
+  // 参数声明一个 lamdba，函数名：code，参数：无，返回值：Unit
   // inline 声明为内联函数
   inline fun supportsLollipop(code: () -> Unit) {
       if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -267,6 +314,28 @@
   ```
 
 - 标准委托（还未用到，先占个坑）
+
+  - map
+
+    ```kotlin
+    // 构造函数传一个 map，map[_id] 会赋值给 _id，map[city] 会赋值给 city
+    class CityForecast(val map: MutableMap<String, Any?>,
+                               val dailyForecast: List<DayForecast>) {
+        var _id: Long by map     // 以 _id 为 key 和 map 映射
+        var city: String by map
+        var country: String by map
+
+        // "id"，"city"，"country" 会作为 key 将只值保存到 HashMap() 中
+        constructor(id: Long, city: String, country: String,
+                    dailyForecast: List<DayForecast>) : this(HashMap(), dailyForecast) {
+            this._id = id
+            this.city = city
+            this.country = country
+        }
+    }
+    ```
+
+    ​
 
 - 自定义委托属性
 
@@ -371,7 +440,7 @@
          DayForecastTable.CITY_ID to INTEGER)
      }
 
-                  // 数据库升级时调用
+     // 数据库升级时调用
      override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
          // 删除表，然后重建
          // 注意：这样处理数据库升级是不正确的 ！
@@ -396,25 +465,26 @@
 
 - 一些集合
 
--  **Iterable**：所有集合的父类，我们可以遍历的集合都是实现了这个接口
 
--  **MutableIterable**：一个支持遍历的同时可以执行删除的 Iterable
+  - **Iterable**：所有集合的父类，我们可以遍历的集合都是实现了这个接口
 
--  **Collection**：这个类相是一个范性集合，我们通过函数访问可以返回集合的 size、是否为空、是否包含一个或者一些 item，这个集合的所有方法提供查询
+  - **MutableIterable**：一个支持遍历的同时可以执行删除的 Iterable
 
--  **MutableCollection**：一个支持增加和删除 item 的 Collection，它提供了额外的函数，比如`add`、`remove`、`clear` 等等
+  - **Collection**：这个类相是一个范性集合，我们通过函数访问可以返回集合的 size、是否为空、是否包含一个或者一些 item，这个集合的所有方法提供查询
 
--  **List**：可能是最流行的集合，有序
+  - **MutableCollection**：一个支持增加和删除 item 的 Collection，它提供了额外的函数，比如`add`、`remove`、`clear` 等等
 
--  **MutableList**：一个支持增加和删除 item 的 List
+  - **List**：可能是最流行的集合，有序
 
--  **Set**：一个无序并不支持重复 item 的集合
+  - **MutableList**：一个支持增加和删除 item 的 List
 
--  **MutableSet**：一个支持增加和删除 item 的 Set
+  - **Set**：一个无序并不支持重复 item 的集合
 
--  **Map**：一个 key-value 对的 collection，key 在 map 中是唯一的
+  - **MutableSet**：一个支持增加和删除 item 的 Set
 
--  **MutableMap**：一个支持增加和删除 item 的 map
+  - **Map**：一个 key-value 对的 collection，key 在 map 中是唯一的
+
+  - **MutableMap**：一个支持增加和删除 item 的 map
 
 - 总数操作符
 
@@ -539,6 +609,124 @@
 
   // mapIndexed，比 map 多了一个 index 参数，可以使用 index 参与变换
   println(list.mapIndexed { index, it -> index * it })   // [0, 2, 6, 12, 20, 30]
+  ```
+
+- 元素操作符
+
+  ```kotlin
+  fun main(args: Array<String>) {
+
+      val list = listOf(1, 2, 3, 4, 5, 6)
+
+      // contains，集合是否包含一个元素
+      println(list.contains(2))  // true
+
+      // elementAt，取出 index 为 n 的元素，内部是调用的 get(index)
+      // 如果 index 越界，抛出 IndexOutOfBoundsException
+      println(list.elementAt(1))  // 2
+
+
+      // elementAtOrElse，和 elementAt 相同，数组越界返回默认值
+      // 这里 it 就是 7
+      println(list.elementAtOrElse(7, { 2 * it }))  // 14
+
+      // elementAtOrNull，和 elementAt 相同，数组越界返回 null
+      println(list.elementAtOrNull(10))  // null
+
+      // first，返回符合条件的第一个元素，不存在抛出 NoSuchElementException
+      println(list.first { it % 2 == 0 })   // 2
+
+      // firstOrNull，返回符合条件的第一个函数，没有返回 null
+      println(list.firstOrNull { it % 7 == 0 })  // null
+
+      // indexOf，返回指定元素的第一个 index，不存在返回 -1
+      println(list.indexOf(4))    // 3
+      println(list.indexOf(7))    // -1
+
+      // lastIndexOf，返回指定元素的最后一个 index，不存在返回 -1
+      println(list.lastIndexOf(3))    // 2
+
+      // indexOfFirst，返回第一个符合条件元素的 index，不存返回 -1
+      println(list.indexOfFirst { it % 2 == 0 })   // 1
+
+      // indexOfLast，返回最后一个符合条件元素的 index，不存返回 -1
+      println(list.indexOfLast { it % 2 == 0 })   // 5
+
+      // last，返回最后一个符合条件的元素，不存在抛出 NoSuchElementException
+      println(list.last { it % 2 == 0 })  // 6
+
+      // lastOrNull，返回最后一个符合条件的元素，没有返回 null
+      println(list.lastOrNull { it % 7 == 0 })  // null
+
+      // single，返回符合条件的唯一元素
+      // 不存在抛出 NoSuchElementException，多个符合抛出 IllegalArgumentException
+      println(list.single{it % 5 == 0})   // 5
+
+      // singleOrNull，返回符合条件的唯一元素，不存在或多个返回 null
+      println(list.singleOrNull{it % 2 == 0})  // null
+      println(list.singleOrNull{it % 7 == 0})  // null
+
+  }
+  ```
+
+- 生产操作符
+
+  ```kotlin
+  fun main(args: Array<String>) {
+
+      val list = listOf(1, 2, 3, 4, 5, 6)
+      val listRepeated = listOf(2, 2, 3, 4, 5, 5, 6)
+      // merge 没找到这个操作符
+      
+
+      // partition，根据一个函数将集合分成两个，返回一个 Pair
+      // Pair first 是函数返回 true 的元素组成的集合
+      // Pair second 是函数返回 false 的元素组成的集合
+      val pair = list.partition { it % 2 == 0 }
+      println(pair)
+      println(pair.first)      // [2, 4, 6]
+      println(pair.second)     // [1, 3, 5]
+
+
+      // plus，可以用 + 代替，合并两个集合
+      println(list.plus(listOf(7, 8)))   // [1, 2, 3, 4, 5, 6, 7, 8]
+      println(list + listOf(7, 8, 9))    // [1, 2, 3, 4, 5, 6, 7, 8, 9]
+
+      // zip，返回由 pair组成的 List，每个 pair由两个集合中相同 index的元素组成。
+      // 这个返回的List的大小由最小的那个集合决定。
+      println(list.zip(listOf(7, 8)))    // [(1, 7), (2, 8)]
+
+
+      // unzip，将一个 List<Pair> 转为 Pair(List,List)
+      // Pair 的 first 是 List<Pair> 中每个 Pair 的 first 组成的 List
+      // Pair 的 second 是 List<Pair> 中每个 Pair 的 second 组成的 List
+      val listPair = listOf(Pair(5, 7), Pair(6, 8))   // [(5, 7), (6, 8)]
+      println(listPair.unzip())    // ([5, 6], [7, 8])
+  }
+  ```
+
+- 排序操作符
+
+  ```kotlin
+  fun main(args: Array<String>) {
+
+      val list = listOf(3, 2, 7, 5)
+
+      // reversed，反转
+      println(list.reversed())  // [5, 7, 2, 3]
+
+      // sorted，排序（升序）
+      println(list.sorted())    // [2, 3, 5, 7]
+
+      // sortedBy 根据函数结果排序（升序）
+      println(list.sortedBy { it % 3 })  // [3, 7, 2, 5]
+
+      // sortedDescending，排序（降序）
+      println(list.sortedDescending())   // [7, 5, 3, 2]
+
+      // sortedBy 根据函数结果排序（降序）
+      println(list.sortedByDescending { it % 3 })  // [2, 5, 7, 3]
+  }
   ```
 
   ​

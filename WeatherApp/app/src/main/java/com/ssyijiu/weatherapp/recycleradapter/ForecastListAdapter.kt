@@ -6,18 +6,18 @@ import android.view.View
 import android.view.ViewGroup
 import com.squareup.picasso.Picasso
 import com.ssyijiu.weatherapp.R
-import com.ssyijiu.weatherapp.domain.vo.Forecast
-import com.ssyijiu.weatherapp.domain.vo.ForecastList
+import com.ssyijiu.weatherapp.entries.vo.ForecastListVO
+import com.ssyijiu.weatherapp.entries.vo.ForecastVO
 import com.ssyijiu.weatherapp.extensions.ctx
 import kotlinx.android.synthetic.main.item_forecast.view.*
 
 /**
  * Created by ssyijiu on 2017/6/3.
- * Github : ssyijiu
+ * GitHub : ssyijiu
  * Email  : lxmyijiu@163.com
  */
 
-class ForecastListAdapter(val datas: ForecastList, val itemClick: (Forecast) -> Unit) : RecyclerView.Adapter<ForecastListAdapter.ViewHolder>() {
+class ForecastListAdapter(val datas: ForecastListVO, val itemClick: (ForecastVO) -> Unit) : RecyclerView.Adapter<ForecastListAdapter.ViewHolder>() {
 
     override fun getItemCount() = datas.size()
 
@@ -35,10 +35,10 @@ class ForecastListAdapter(val datas: ForecastList, val itemClick: (Forecast) -> 
     }
 
 
-    class ViewHolder(itemView: View, val itemClick: (Forecast) -> Unit) :
+    class ViewHolder(itemView: View, val itemClick: (ForecastVO) -> Unit) :
         RecyclerView.ViewHolder(itemView) {
 
-        fun bindForecast(forecast: Forecast) {
+        fun bindForecast(forecast: ForecastVO) {
 
             with(forecast) {
                 Picasso.with(itemView.ctx).load(iconUrl).into(itemView.icon)

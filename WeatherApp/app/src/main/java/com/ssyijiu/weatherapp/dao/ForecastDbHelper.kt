@@ -9,6 +9,8 @@ import org.jetbrains.anko.db.*
  * Created by ssyijiu on 2017/6/4.
  * GitHub : ssyijiu
  * Email  : lxmyijiu@163.com
+ *
+ * SQLiteOpenHelper 创建、更新数据库
  */
 
 class ForecastDbHelper(context: Context = App.instance) : ManagedSQLiteOpenHelper(
@@ -19,6 +21,7 @@ class ForecastDbHelper(context: Context = App.instance) : ManagedSQLiteOpenHelpe
 
     override fun onCreate(db: SQLiteDatabase) {
 
+        // 创建表
         db.createTable(CityForecastTable.NAME, // 表名
             true, // if true 创建之前检查这个表是否存在
             // Pair(CityForecastTable.ID, INTEGER + PRIMARY_KEY),
@@ -29,21 +32,21 @@ class ForecastDbHelper(context: Context = App.instance) : ManagedSQLiteOpenHelpe
             CityForecastTable.CITY to TEXT,
             CityForecastTable.COUNTRY to TEXT)
 
-        db.createTable(DayForecastTable.NAME, true,
-            DayForecastTable.ID to INTEGER + PRIMARY_KEY + AUTOINCREMENT,
-            DayForecastTable.DATE to INTEGER,
-            DayForecastTable.DESCRIPTION to TEXT,
-            DayForecastTable.HIGH to INTEGER,
-            DayForecastTable.LOW to INTEGER,
-            DayForecastTable.ICON_URL to TEXT,
-            DayForecastTable.CITY_ID to INTEGER)
+        db.createTable(DetailedForecastTable.NAME, true,
+            DetailedForecastTable.ID to INTEGER + PRIMARY_KEY + AUTOINCREMENT,
+            DetailedForecastTable.DATE to INTEGER,
+            DetailedForecastTable.DESCRIPTION to TEXT,
+            DetailedForecastTable.HIGH to INTEGER,
+            DetailedForecastTable.LOW to INTEGER,
+            DetailedForecastTable.ICON_URL to TEXT,
+            DetailedForecastTable.CITY_ID to INTEGER)
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
 
         // 删除表
         db.dropTable(CityForecastTable.NAME, true)
-        db.dropTable(DayForecastTable.NAME, true)
+        db.dropTable(DetailedForecastTable.NAME, true)
 
         // 重建表
         onCreate(db)

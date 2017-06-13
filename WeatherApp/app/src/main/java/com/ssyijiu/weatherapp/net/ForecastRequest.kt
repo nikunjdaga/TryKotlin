@@ -1,18 +1,20 @@
 package com.ssyijiu.weatherapp.net
 
 import com.google.gson.Gson
-import com.ssyijiu.weatherapp.domain.dto.ForecastResult
+import com.ssyijiu.weatherapp.entries.dto.ForecastResultDTO
 import java.net.URL
 
 /**
  * Created by ssyijiu on 2017/6/3.
- * Github : ssyijiu
+ * GitHub : ssyijiu
  * Email  : lxmyijiu@163.com
+ *
+ * 请求网络，获取 DTO
  */
 
-// 请求网络，获取 DTO
-class ForecastRequest(val zipCode:String){
+class ForecastRequest(val cityId: String) {
 
+    // url
     companion object {
 
         private val APP_ID = "15646a06818f61f7b8d7823ca833e1ce"
@@ -21,10 +23,10 @@ class ForecastRequest(val zipCode:String){
         private val COMPLETE_URL = "$URL&APPID=$APP_ID&q="
     }
 
-    fun request(): ForecastResult {
+    fun request(): ForecastResultDTO {
         // request json
-        val forecastJsonStr = URL(COMPLETE_URL + zipCode).readText()
+        val forecastJsonStr = URL(COMPLETE_URL + cityId).readText()
         // json to bean
-        return Gson().fromJson(forecastJsonStr, ForecastResult::class.java)
+        return Gson().fromJson(forecastJsonStr, ForecastResultDTO::class.java)
     }
 }
