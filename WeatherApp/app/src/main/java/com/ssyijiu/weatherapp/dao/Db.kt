@@ -38,6 +38,7 @@ class Db(
             .whereSimple("${CityTable.ID} = ?", cityId.toString())
             .parseOpt { CityModel(HashMap(it), weatherList) }
 
+        //
         if (city != null) dataMapper.convertToCityModel(city) else null
     }
 }
