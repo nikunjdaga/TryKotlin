@@ -13,15 +13,15 @@ package com.ssyijiu.weatherapp.dao
 /**
  * 城市信息，包含一系列的天气详情
  */
-class CityForecast(val map: MutableMap<String, Any?>,
-                   val detailedForecast: List<DetailedForecast>) {
+class CityModel(val map: MutableMap<String, Any?>,
+                val weatherList: List<WeatherModel>) {
     // id、city、country 三个字段都会映射到 map 中
     var _id: Long by map
     var city: String by map
     var country: String by map
 
     constructor(id: Long, city: String, country: String,
-                dailyForecast: List<DetailedForecast>) : this(HashMap(), dailyForecast) {
+                dailyForecast: List<WeatherModel>) : this(HashMap(), dailyForecast) {
         this._id = id
         this.city = city
         this.country = country
@@ -32,7 +32,7 @@ class CityForecast(val map: MutableMap<String, Any?>,
 /**
  * 天气信息
  */
-class DetailedForecast(var map: MutableMap<String, Any?>) {
+class WeatherModel(var map: MutableMap<String, Any?>) {
     var _id: Long by map
     var date: String by map
     var description: String by map

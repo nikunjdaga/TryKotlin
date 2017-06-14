@@ -8,15 +8,15 @@ package com.ssyijiu.weatherapp.dao
  * 数据库表结构，两张表，一张城市表，一张天气表
  */
 
-object CityForecastTable {
-    val NAME = "CityForecast"    // 城市信息
+object CityTable {
+    val NAME = "CityModel"       // 城市信息
     val ID = "_id"               // 城市 id
     val CITY = "city"            // 城市名称
     val COUNTRY = "country"      // 位于哪个国家
 }
 
-object DetailedForecastTable {
-    val NAME = "DetailedForecast"    // 天气信息
+object WeatherTable {
+    val NAME = "WeatherModel"        // 天气信息
     val ID = "_id"                   // id
     val DATE = "date"                // 具体时间
     val DESCRIPTION = "description"  // 描述
