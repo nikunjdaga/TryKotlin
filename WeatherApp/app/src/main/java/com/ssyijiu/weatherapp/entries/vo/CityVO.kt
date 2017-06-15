@@ -9,13 +9,13 @@ package com.ssyijiu.weatherapp.entries.vo
  */
 
 
-data class WeatherListVO(val city: String, val country: String,
-                         val weatherList: List<WeatherVO>) {
+data class CityVO(val city: String, val country: String,
+                  val weatherVOList: List<WeatherVO>) {
 
     // 重载 get 方法
-    operator fun get(position: Int) = weatherList[position]
+    operator fun get(position: Int) = weatherVOList[position]
 
-    fun size() = weatherList.size
+    fun size() = weatherVOList.size
 }
 
 data class WeatherVO(val date: String, val description: String, val high: Int,

@@ -14,7 +14,7 @@ package com.ssyijiu.weatherapp.dao
  * 城市信息，包含一系列的天气详情
  */
 class CityModel(val map: MutableMap<String, Any?>,
-                val weatherList: List<WeatherModel>) {
+                val weatherModelList: List<WeatherModel>) {
     // id、city、country 三个字段都会映射到 map 中
     var _id: Long by map
     var city: String by map

@@ -1,7 +1,7 @@
 package com.ssyijiu.weatherapp.net
 
 import com.ssyijiu.weatherapp.entries.DTO2VO
-import com.ssyijiu.weatherapp.entries.vo.WeatherListVO
+import com.ssyijiu.weatherapp.entries.vo.CityVO
 
 /**
  * Created by ssyijiu on 2017/6/3.
@@ -10,9 +10,9 @@ import com.ssyijiu.weatherapp.entries.vo.WeatherListVO
  */
 
 
-class WeatherTask(private val cityId: String) : Task<WeatherListVO> {
+class WeatherTask(private val cityId: String) : Task<CityVO> {
 
-    override fun execute(): WeatherListVO {
+    override fun execute(): CityVO {
 
         // request net get DTO
         val forecastRequest = WeatherRequest(cityId)

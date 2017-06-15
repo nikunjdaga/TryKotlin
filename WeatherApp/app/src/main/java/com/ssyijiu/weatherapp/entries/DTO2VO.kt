@@ -1,8 +1,8 @@
 package com.ssyijiu.weatherapp.entries
 
-import com.ssyijiu.weatherapp.entries.dto.WeatherDTO
-import com.ssyijiu.weatherapp.entries.dto.WeatherResultDTO
-import com.ssyijiu.weatherapp.entries.vo.WeatherListVO
+import com.ssyijiu.weatherapp.entries.dto.Weather
+import com.ssyijiu.weatherapp.entries.dto.WeatherResult
+import com.ssyijiu.weatherapp.entries.vo.CityVO
 import com.ssyijiu.weatherapp.entries.vo.WeatherVO
 import java.text.DateFormat
 import java.util.*
@@ -18,17 +18,17 @@ import java.util.*
 
 class DTO2VO {
 
-    // WeatherResultDTO -> WeatherListVO
-    fun convert(result: WeatherResultDTO): WeatherListVO {
-        return WeatherListVO(result.city.name, result.city.country,
+    // WeatherResult -> CityVO
+    fun convert(result: WeatherResult): CityVO {
+        return CityVO(result.city.name, result.city.country,
             convertWeatherList(result.list))
     }
 
-    private fun convertWeatherList(list: List<WeatherDTO>): List<WeatherVO> {
+    private fun convertWeatherList(list: List<Weather>): List<WeatherVO> {
         return list.map { convertWeatherItem(it) }
     }
 
-    private fun convertWeatherItem(weather: WeatherDTO): WeatherVO {
+    private fun convertWeatherItem(weather: Weather): WeatherVO {
         return WeatherVO(convertDate(weather.dt),
             weather.weather[0].description, weather.temp.max.toInt(),
             weather.temp.min.toInt(), getIconUrl(weather.weather[0].icon))

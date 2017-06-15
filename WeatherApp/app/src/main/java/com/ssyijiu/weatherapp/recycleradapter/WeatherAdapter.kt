@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.squareup.picasso.Picasso
 import com.ssyijiu.weatherapp.R
-import com.ssyijiu.weatherapp.entries.vo.WeatherListVO
+import com.ssyijiu.weatherapp.entries.vo.CityVO
 import com.ssyijiu.weatherapp.entries.vo.WeatherVO
 import com.ssyijiu.weatherapp.extensions.ctx
 import kotlinx.android.synthetic.main.item_forecast.view.*
@@ -17,7 +17,7 @@ import kotlinx.android.synthetic.main.item_forecast.view.*
  * Email  : lxmyijiu@163.com
  */
 
-class WeatherAdapter(val datas: WeatherListVO, val itemClick: (WeatherVO) -> Unit) : RecyclerView.Adapter<WeatherAdapter.ViewHolder>() {
+class WeatherAdapter(val datas: CityVO, val itemClick: (WeatherVO) -> Unit) : RecyclerView.Adapter<WeatherAdapter.ViewHolder>() {
 
     override fun getItemCount() = datas.size()
 
