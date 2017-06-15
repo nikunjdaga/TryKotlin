@@ -251,13 +251,14 @@
 
           holder.bindForecast(datas[position])
       }
+  ```
 
 
       class ViewHolder(itemView: View, val itemClick: (ForecastVO) -> Unit) :
           RecyclerView.ViewHolder(itemView) {
-
+    
           fun bindForecast(forecast: ForecastVO) {
-
+    
               with(forecast) {
                   Picasso.with(itemView.ctx).load(iconUrl).into(itemView.icon)
                   itemView.date.text = date
@@ -465,7 +466,7 @@
 - 一些集合
 
 
-  - **Iterable**：所有集合的父类，我们可以遍历的集合都是实现了这个接口
+-   **Iterable**：所有集合的父类，我们可以遍历的集合都是实现了这个接口
 
   - **MutableIterable**：一个支持遍历的同时可以执行删除的 Iterable
 
@@ -623,44 +624,45 @@
       // elementAt，取出 index 为 n 的元素，内部是调用的 get(index)
       // 如果 index 越界，抛出 IndexOutOfBoundsException
       println(list.elementAt(1))  // 2
+  ```
 
 
       // elementAtOrElse，和 elementAt 相同，数组越界返回默认值
       // 这里 it 就是 7
       println(list.elementAtOrElse(7, { 2 * it }))  // 14
-
+    
       // elementAtOrNull，和 elementAt 相同，数组越界返回 null
       println(list.elementAtOrNull(10))  // null
-
+    
       // first，返回符合条件的第一个元素，不存在抛出 NoSuchElementException
       println(list.first { it % 2 == 0 })   // 2
-
+    
       // firstOrNull，返回符合条件的第一个函数，没有返回 null
       println(list.firstOrNull { it % 7 == 0 })  // null
-
+    
       // indexOf，返回指定元素的第一个 index，不存在返回 -1
       println(list.indexOf(4))    // 3
       println(list.indexOf(7))    // -1
-
+    
       // lastIndexOf，返回指定元素的最后一个 index，不存在返回 -1
       println(list.lastIndexOf(3))    // 2
-
+    
       // indexOfFirst，返回第一个符合条件元素的 index，不存返回 -1
       println(list.indexOfFirst { it % 2 == 0 })   // 1
-
+    
       // indexOfLast，返回最后一个符合条件元素的 index，不存返回 -1
       println(list.indexOfLast { it % 2 == 0 })   // 5
-
+    
       // last，返回最后一个符合条件的元素，不存在抛出 NoSuchElementException
       println(list.last { it % 2 == 0 })  // 6
-
+    
       // lastOrNull，返回最后一个符合条件的元素，没有返回 null
       println(list.lastOrNull { it % 7 == 0 })  // null
-
+    
       // single，返回符合条件的唯一元素
       // 不存在抛出 NoSuchElementException，多个符合抛出 IllegalArgumentException
       println(list.single{it % 5 == 0})   // 5
-
+    
       // singleOrNull，返回符合条件的唯一元素，不存在或多个返回 null
       println(list.singleOrNull{it % 2 == 0})  // null
       println(list.singleOrNull{it % 7 == 0})  // null
@@ -756,4 +758,4 @@
     a!!.toString()  // 断言 a != null，null 直接抛出异常
     ```
 
-    ​
+  - 记住，如果你使用了 `!!`，可能是因为你确信对象不可能为null，如果是这样，请定义为非null。

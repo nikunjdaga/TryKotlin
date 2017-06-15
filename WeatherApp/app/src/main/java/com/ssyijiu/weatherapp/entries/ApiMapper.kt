@@ -16,7 +16,7 @@ import java.util.*
  */
 
 
-class DTO2VO {
+class ApiMapper {
 
     // WeatherResult -> CityVO
     fun convert(result: WeatherResult): CityVO {

@@ -1,7 +1,5 @@
 package com.ssyijiu.weatherapp.dao
 
-import com.ssyijiu.weatherapp.R.id.date
-import com.ssyijiu.weatherapp.R.id.description
 import com.ssyijiu.weatherapp.entries.vo.CityVO
 import com.ssyijiu.weatherapp.entries.vo.WeatherVO
 

@@ -1,6 +1,6 @@
 package com.ssyijiu.weatherapp.net
 
-import com.ssyijiu.weatherapp.entries.DTO2VO
+import com.ssyijiu.weatherapp.entries.ApiMapper
 import com.ssyijiu.weatherapp.entries.vo.CityVO
 
 /**
@@ -18,7 +18,7 @@ class WeatherTask(private val cityId: String) : Task<CityVO> {
         val forecastRequest = WeatherRequest(cityId)
 
         // convert DTO to VO
-        return DTO2VO().convert(
+        return ApiMapper().convert(
             forecastRequest.request())
     }
 }
