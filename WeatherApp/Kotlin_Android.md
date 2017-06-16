@@ -251,43 +251,40 @@
 
           holder.bindForecast(datas[position])
       }
-  ```
-
-
-      class ViewHolder(itemView: View, val itemClick: (ForecastVO) -> Unit) :
-          RecyclerView.ViewHolder(itemView) {
     
-          fun bindForecast(forecast: ForecastVO) {
-    
-              with(forecast) {
-                  Picasso.with(itemView.ctx).load(iconUrl).into(itemView.icon)
-                  itemView.date.text = date
-                  itemView.description.text = description
-                  itemView.maxTemperature.text = high.toString()
-                  itemView.minTemperature.text = low.toString()
-                  itemView.setOnClickListener { itemClick(this) }
-              }
-          }
-      }
+    class ViewHolder(itemView: View, val itemClick: (ForecastVO) -> Unit) :
+        RecyclerView.ViewHolder(itemView) {
+
+        fun bindForecast(forecast: ForecastVO) {
+
+            with(forecast) {
+                Picasso.with(itemView.ctx).load(iconUrl).into(itemView.icon)
+                itemView.date.text = date
+                itemView.description.text = description
+                itemView.maxTemperature.text = high.toString()
+                itemView.minTemperature.text = low.toString()
+                itemView.setOnClickListener { itemClick(this) }
+            }
+        }
+    } 
   }
 
   // 使用这个 adapter
   rvForecastList.adapter = ForecastListAdapter(result) {
-  	toast(it.date)
+    toast(it.date)
   }
+    
   ```
 
-  ​
-
-- 扩展语言
+- 扩展函数
 
   ```kotlin
   // 参数声明一个 lamdba，函数名：code，参数：无，返回值：Unit
   // inline 声明为内联函数
   inline fun supportsLollipop(code: () -> Unit) {
-      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-          code()
-      }
+  	if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+      	code()
+    	}
   }
 
   // 使用
@@ -295,6 +292,7 @@
     	toast("supportsLollipop")
   }
   ```
+
 
 - 可见性修饰符
 
@@ -387,7 +385,6 @@
   compile "org.jetbrains.anko:anko-sqlite:$anko_version"
   ```
 
-  ​
 
 
 - 定义表：
@@ -541,9 +538,6 @@
    println(list.sumBy { it % 2 })  // 3
   ```
 
-  ​
-
-
 
 
 - 过滤操作符
@@ -624,61 +618,60 @@
       // elementAt，取出 index 为 n 的元素，内部是调用的 get(index)
       // 如果 index 越界，抛出 IndexOutOfBoundsException
       println(list.elementAt(1))  // 2
-  ```
-
-
+    
       // elementAtOrElse，和 elementAt 相同，数组越界返回默认值
       // 这里 it 就是 7
       println(list.elementAtOrElse(7, { 2 * it }))  // 14
-    
+
       // elementAtOrNull，和 elementAt 相同，数组越界返回 null
       println(list.elementAtOrNull(10))  // null
-    
+
       // first，返回符合条件的第一个元素，不存在抛出 NoSuchElementException
       println(list.first { it % 2 == 0 })   // 2
-    
+
       // firstOrNull，返回符合条件的第一个函数，没有返回 null
       println(list.firstOrNull { it % 7 == 0 })  // null
-    
+
       // indexOf，返回指定元素的第一个 index，不存在返回 -1
       println(list.indexOf(4))    // 3
       println(list.indexOf(7))    // -1
-    
+
       // lastIndexOf，返回指定元素的最后一个 index，不存在返回 -1
       println(list.lastIndexOf(3))    // 2
-    
+
       // indexOfFirst，返回第一个符合条件元素的 index，不存返回 -1
       println(list.indexOfFirst { it % 2 == 0 })   // 1
-    
+
       // indexOfLast，返回最后一个符合条件元素的 index，不存返回 -1
       println(list.indexOfLast { it % 2 == 0 })   // 5
-    
+
       // last，返回最后一个符合条件的元素，不存在抛出 NoSuchElementException
       println(list.last { it % 2 == 0 })  // 6
-    
+
       // lastOrNull，返回最后一个符合条件的元素，没有返回 null
       println(list.lastOrNull { it % 7 == 0 })  // null
-    
+
       // single，返回符合条件的唯一元素
       // 不存在抛出 NoSuchElementException，多个符合抛出 IllegalArgumentException
       println(list.single{it % 5 == 0})   // 5
-    
+
       // singleOrNull，返回符合条件的唯一元素，不存在或多个返回 null
       println(list.singleOrNull{it % 2 == 0})  // null
       println(list.singleOrNull{it % 7 == 0})  // null
-
   }
   ```
+
+
+ 
 
 - 生产操作符
 
   ```kotlin
   fun main(args: Array<String>) {
-
       val list = listOf(1, 2, 3, 4, 5, 6)
       val listRepeated = listOf(2, 2, 3, 4, 5, 5, 6)
       // merge 没找到这个操作符
-      
+
 
       // partition，根据一个函数将集合分成两个，返回一个 Pair
       // Pair first 是函数返回 true 的元素组成的集合
@@ -703,8 +696,9 @@
       // Pair 的 second 是 List<Pair> 中每个 Pair 的 second 组成的 List
       val listPair = listOf(Pair(5, 7), Pair(6, 8))   // [(5, 7), (6, 8)]
       println(listPair.unzip())    // ([5, 6], [7, 8])
-  }
+    }
   ```
+
 
 - 排序操作符
 
@@ -730,15 +724,15 @@
   }
   ```
 
-- 保存和读取数据库
+- 从数据库读取和保存数据
 
   ```kotlin
-  // 太复杂，先占坑
+  // 先占坑
   ```
 
 - null 安全
 
-  - 黄金准则：如果变量是可以是null，编译器强制我们去用某种方式去处理。
+  - 黄金准则：如果变量是可以是 null，编译器强制我们去用某种方式去处理。
 
     ```kotlin
     val a: Int? = null
@@ -759,3 +753,5 @@
     ```
 
   - 记住，如果你使用了 `!!`，可能是因为你确信对象不可能为null，如果是这样，请定义为非null。
+
+- 使用 DataSource 来实现获取数据的逻辑

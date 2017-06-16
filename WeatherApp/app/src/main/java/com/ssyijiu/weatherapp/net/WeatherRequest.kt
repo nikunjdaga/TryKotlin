@@ -1,7 +1,7 @@
 package com.ssyijiu.weatherapp.net
 
 import com.google.gson.Gson
-import com.ssyijiu.weatherapp.entries.dto.WeatherResult
+import com.ssyijiu.weatherapp.net.data.WeatherResultResp
 import java.net.URL
 
 /**
@@ -23,10 +23,10 @@ class WeatherRequest(val cityId: String) {
         private val COMPLETE_URL = "$URL&APPID=$APP_ID&q="
     }
 
-    fun request(): WeatherResult {
+    fun request(): WeatherResultResp {
         // request json
         val forecastJsonStr = URL(COMPLETE_URL + cityId).readText()
         // json to bean
-        return Gson().fromJson(forecastJsonStr, WeatherResult::class.java)
+        return Gson().fromJson(forecastJsonStr, WeatherResultResp::class.java)
     }
 }

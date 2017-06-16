@@ -1,7 +1,7 @@
 package com.ssyijiu.weatherapp.net
 
-import com.ssyijiu.weatherapp.entries.ApiMapper
-import com.ssyijiu.weatherapp.entries.vo.CityVO
+import com.ssyijiu.weatherapp.net.data.ApiMapper
+import com.ssyijiu.weatherapp.net.data.CityBean
 
 /**
  * Created by ssyijiu on 2017/6/3.
@@ -10,9 +10,9 @@ import com.ssyijiu.weatherapp.entries.vo.CityVO
  */
 
 
-class WeatherTask(private val cityId: String) : Task<CityVO> {
+class WeatherTask(private val cityId: String) : Task<CityBean> {
 
-    override fun execute(): CityVO {
+    override fun execute(): CityBean {
 
         // request net get DTO
         val forecastRequest = WeatherRequest(cityId)

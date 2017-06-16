@@ -1,7 +1,7 @@
 package com.ssyijiu.weatherapp.dao
 
-import com.ssyijiu.weatherapp.entries.vo.CityVO
-import com.ssyijiu.weatherapp.entries.vo.WeatherVO
+import com.ssyijiu.weatherapp.net.data.CityBean
+import com.ssyijiu.weatherapp.net.data.WeatherBean
 
 /**
  * Created by ssyijiu on 2017/6/13.
@@ -11,21 +11,21 @@ import com.ssyijiu.weatherapp.entries.vo.WeatherVO
 
 class DbMapper {
 
-    fun convert2CityVO(cityModel: CityModel) = with(cityModel) {
-        val weatherVOList = weatherModelList.map { convert2WeatherVO(it) }
-        CityVO(city, country, weatherVOList)
+    fun convert2CityBean(cityModel: CityModel) = with(cityModel) {
+        val weatherVOList = weatherModelList.map { convert2WeatherBean(it) }
+        CityBean(city, country, weatherVOList)
     }
 
-    private fun convert2WeatherVO(weatherModel: WeatherModel) = with(weatherModel) {
-        WeatherVO(date, description, high, low, iconUrl)
+    private fun convert2WeatherBean(weatherModel: WeatherModel) = with(weatherModel) {
+        WeatherBean(date, description, high, low, iconUrl)
     }
 
-    fun convert2CityModel(cityId: Long, cityVO: CityVO) = with(cityVO) {
-        val daily = weatherVOList.map { convert2WeatherModel(cityId, it) }
+    fun convert2CityModel(cityId: String, cityVO: CityBean) = with(cityVO) {
+        val daily = weatherBeanList.map { convert2WeatherModel(cityId, it) }
         CityModel(cityId, city, country, daily)
     }
 
-    private fun convert2WeatherModel(cityId: Long, weatherVO: WeatherVO) =
+    private fun convert2WeatherModel(cityId: String, weatherVO: WeatherBean) =
         with(weatherVO) {
             WeatherModel(date, description, high, low, iconUrl, cityId)
         }

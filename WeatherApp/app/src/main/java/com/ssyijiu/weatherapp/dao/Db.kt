@@ -1,7 +1,7 @@
 package com.ssyijiu.weatherapp.dao
 
 import android.database.sqlite.SQLiteDatabase
-import com.ssyijiu.weatherapp.entries.vo.CityVO
+import com.ssyijiu.weatherapp.net.data.CityBean
 import org.jetbrains.anko.db.MapRowParser
 import org.jetbrains.anko.db.SelectQueryBuilder
 import org.jetbrains.anko.db.insert
@@ -16,11 +16,10 @@ class Db(
 
     // DbHelper
     val dbHelper: DbHelper = DbHelper.instance,
-
     val dbMapper: DbMapper = DbMapper()) {
 
     // 读取数据
-    fun requestWeather(cityId: Long, date: Long) = dbHelper.use {
+    fun requestWeather(cityId: String, days: Int) = dbHelper.use {
 
         // SQL，查询某个城市某个时间段的天气详情
         val sql = "${WeatherTable.CITY_ID} = ? " +
@@ -29,7 +28,7 @@ class Db(
         val weatherList = select(WeatherTable.NAME)
             // 返回 SelectQueryBuilder，这里面封装了各种查询条件
             // 调用 parse 系列函数的时候真正的执行 SQL 语句，返回 Cursor
-            .whereSimple(sql, cityId.toString(), date.toString())
+            .whereSimple(sql, cityId.toString(), days.toString())
 
             // it 是 parseRow 的参数 columns，是一个 map
             // 调用 columns HashMap(Map<? extends K, ? extends V> m) 创建 HashMap
@@ -43,20 +42,20 @@ class Db(
             // parseOpt 查询结果大于 1 条抛出异常，0 条返回 null
             .parseOpt { CityModel(HashMap(it), weatherList) }
 
-        // 将 CityMode 转为直接在视图上显示的 CityVO
-        if (city != null) dbMapper.convert2CityVO(city) else null
+        // 将 CityMode 转为直接在视图上显示的 CityBean
+        if (city != null) dbMapper.convert2CityBean(city) else null
     }
 
 
     // 保存数据
-    fun saveForecast(cityId: Long, cityVO: CityVO) = dbHelper.use {
+    fun saveForecast(cityId: String, cityBean: CityBean) = dbHelper.use {
 
         // 删除所有数据
         clear(CityTable.NAME)
         clear(WeatherTable.NAME)
 
-        // CityVO -> CityModel
-        with(dbMapper.convert2CityModel(cityId, cityVO)) {
+        // CityBean -> CityModel
+        with(dbMapper.convert2CityModel(cityId, cityBean)) {
 
             insert(CityTable.NAME, *map.toVarargArray())
 

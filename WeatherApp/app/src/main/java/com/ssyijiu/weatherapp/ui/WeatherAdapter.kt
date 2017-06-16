@@ -1,4 +1,4 @@
-package com.ssyijiu.weatherapp.recycleradapter
+package com.ssyijiu.weatherapp.ui
 
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -6,8 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import com.squareup.picasso.Picasso
 import com.ssyijiu.weatherapp.R
-import com.ssyijiu.weatherapp.entries.vo.CityVO
-import com.ssyijiu.weatherapp.entries.vo.WeatherVO
+import com.ssyijiu.weatherapp.net.data.CityBean
+import com.ssyijiu.weatherapp.net.data.WeatherBean
 import com.ssyijiu.weatherapp.extensions.ctx
 import kotlinx.android.synthetic.main.item_forecast.view.*
 
@@ -17,7 +17,7 @@ import kotlinx.android.synthetic.main.item_forecast.view.*
  * Email  : lxmyijiu@163.com
  */
 
-class WeatherAdapter(val datas: CityVO, val itemClick: (WeatherVO) -> Unit) : RecyclerView.Adapter<WeatherAdapter.ViewHolder>() {
+class WeatherAdapter(val datas: CityBean, val itemClick: (WeatherBean) -> Unit) : RecyclerView.Adapter<WeatherAdapter.ViewHolder>() {
 
     override fun getItemCount() = datas.size()
 
@@ -35,10 +35,10 @@ class WeatherAdapter(val datas: CityVO, val itemClick: (WeatherVO) -> Unit) : Re
     }
 
 
-    class ViewHolder(itemView: View, val itemClick: (WeatherVO) -> Unit) :
+    class ViewHolder(itemView: View, val itemClick: (WeatherBean) -> Unit) :
         RecyclerView.ViewHolder(itemView) {
 
-        fun bindForecast(weather: WeatherVO) {
+        fun bindForecast(weather: WeatherBean) {
 
             with(weather) {
                 Picasso.with(itemView.ctx).load(iconUrl).into(itemView.icon)

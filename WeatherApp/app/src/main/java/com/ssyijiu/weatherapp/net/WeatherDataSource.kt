@@ -1,60 +1,78 @@
 package com.ssyijiu.weatherapp.net
 
 import com.ssyijiu.weatherapp.dao.Db
-import com.ssyijiu.weatherapp.dao.DbHelper
-import com.ssyijiu.weatherapp.dao.DbMapper
-import com.ssyijiu.weatherapp.entries.ApiMapper
-import com.ssyijiu.weatherapp.entries.vo.CityVO
+import com.ssyijiu.weatherapp.net.data.CityBean
 
 /**
  * Created by ssyijiu on 2017/6/15.
  * Github : ssyijiu
  * Email  : lxmyijiu@163.com
+ *
+ * 1. 从数据库获取数据
+ * 2. 检查数据是否存在
+ * 3. 如果存在，进行 UI 渲染
+ * 4. 如果没有，请求服务器数据
+ * 5. 进行 UI 渲染，将数据保存到数据库
+ *
+ * Retrofit + RxCache 套路
  */
 
+/** 数据源接口 */
 interface WeatherDataSource {
-    fun requestWeather(cityId: Long, date: Long): CityVO
+    fun requestWeather(cityId: String, days: Int): CityBean?
 }
 
+/** 数据提供者 */
 class WeatherProvider(val sources: List<WeatherDataSource> =
                       WeatherProvider.SOURCES) {
 
     companion object {
         val DAY_IN_MILLIS = 1000 * 60 * 60 * 24
-        val SOURCES = listOf(WeatherDb(), WeatherServer())
+        // 默认加载数据库、服务器两个数据源，顺序很重要
+        val SOURCES = listOf(WeatherDbSource(), WeatherServerSource())
     }
 
-    fun requestCityId(id: Long, days: Int): CityVO
-        = sources.firstResult{ requestSource(it, days, id) }
-}
+    // 获取数据的方法
+    fun requestCityId(cityId: String, days: Int): CityBean
+        = sources.firstResult { requestSource(it, cityId, days) }
 
-fun requestSource(source: WeatherDataSource, days: Int, zipCode: Long):
-    CityVO? {
-    val res = source.requestForecastByZipCode(zipCode, todayTimeSpan())
-    return if (res != null && res.size() >= days) res else null
-}
 
-class WeatherDb(val dbHelper: DbHelper = DbHelper.instance,
-                val dbMapper: DbMapper = DbMapper()) : WeatherDataSource {
+    private fun requestSource(source: WeatherDataSource, cityId: String, date: Int): CityBean? {
+        val res = source.requestWeather(cityId, date)
+        return if (res != null && res.size() >= date) res else null
+    }
 
-    override fun requestWeather(cityId: Long, date: Long): CityVO {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    // 返回第一个不是 null 结果，修改自 firstOrNull 方法
+    private fun <T, R : Any> Iterable<T>.firstResult(predicate: (T) -> R?): R {
+        for (element in this) {
+            val result = predicate(element)
+            if (result != null) return result
+        }
+        throw NoSuchElementException("No element matching predicate was found.")
     }
 }
 
-class WeatherServer(val apiMapper: ApiMapper = ApiMapper(),
-                    val db: Db = Db()) : WeatherDataSource {
 
-    override fun requestWeather(cityId: Long, date: Long): CityVO {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+/** 数据库数据源 */
+class WeatherDbSource(val db: Db = Db()) : WeatherDataSource {
+
+    override fun requestWeather(cityId: String, days: Int): CityBean? {
+
+        // 从数据库保存数据
+        return db.requestWeather(cityId, days)
     }
-
 }
 
-inline fun <T, R : Any> Iterable<T>.firstResult(predicate: (T) -> R?) : R {
-    for (element in this){
-        val result = predicate(element)
-        if (result != null) return result
+
+/** 服务器数据源 */
+class WeatherServerSource(val db: Db = Db()) : WeatherDataSource {
+
+    override fun requestWeather(cityId: String, days: Int): CityBean? {
+
+        // 从网络请求数据
+        val cityBean = WeatherTask(cityId).execute()
+        // 保存到数据库
+        db.saveForecast(cityId, cityBean)
+        return cityBean
     }
-    throw NoSuchElementException("No element matching predicate was found.")
 }

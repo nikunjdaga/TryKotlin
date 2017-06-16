@@ -1,9 +1,5 @@
-package com.ssyijiu.weatherapp.entries
+package com.ssyijiu.weatherapp.net.data
 
-import com.ssyijiu.weatherapp.entries.dto.Weather
-import com.ssyijiu.weatherapp.entries.dto.WeatherResult
-import com.ssyijiu.weatherapp.entries.vo.CityVO
-import com.ssyijiu.weatherapp.entries.vo.WeatherVO
 import java.text.DateFormat
 import java.util.*
 
@@ -12,24 +8,23 @@ import java.util.*
  * GitHub : ssyijiu
  * Email  : lxmyijiu@163.com
  *
- * 将 DTO 转换为 VO
  */
 
 
 class ApiMapper {
 
-    // WeatherResult -> CityVO
-    fun convert(result: WeatherResult): CityVO {
-        return CityVO(result.city.name, result.city.country,
+    // WeatherResultResp -> CityBean
+    fun convert(result: WeatherResultResp): CityBean {
+        return CityBean(result.city.name, result.city.country,
             convertWeatherList(result.list))
     }
 
-    private fun convertWeatherList(list: List<Weather>): List<WeatherVO> {
+    private fun convertWeatherList(list: List<WeatherResp>): List<WeatherBean> {
         return list.map { convertWeatherItem(it) }
     }
 
-    private fun convertWeatherItem(weather: Weather): WeatherVO {
-        return WeatherVO(convertDate(weather.dt),
+    private fun convertWeatherItem(weather: WeatherResp): WeatherBean {
+        return WeatherBean(convertDate(weather.dt),
             weather.weather[0].description, weather.temp.max.toInt(),
             weather.temp.min.toInt(), getIconUrl(weather.weather[0].icon))
     }
