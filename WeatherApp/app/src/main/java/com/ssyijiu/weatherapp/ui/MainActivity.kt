@@ -3,7 +3,9 @@ package com.ssyijiu.weatherapp.ui
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
+import com.ssyijiu.library.MLog
 import com.ssyijiu.weatherapp.R
+import com.ssyijiu.weatherapp.net.WeatherProvider
 import com.ssyijiu.weatherapp.net.WeatherTask
 import kotlinx.android.synthetic.main.activity_main.*
 import org.jetbrains.anko.doAsync
@@ -20,10 +22,12 @@ class MainActivity : AppCompatActivity() {
         rvWeather.setHasFixedSize(true)
 
         doAsync {
-            val result = WeatherTask("94043").execute()
+            val result = WeatherTask(94043).execute()
             uiThread {
                 rvWeather.adapter = WeatherAdapter(result) {
-                    toast(it.date)
+                    WeatherProvider().requestWeatherDetailed {
+                        it
+                    }
                 }
             }
         }

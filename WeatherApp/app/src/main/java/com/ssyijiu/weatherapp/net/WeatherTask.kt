@@ -1,6 +1,5 @@
 package com.ssyijiu.weatherapp.net
 
-import com.ssyijiu.weatherapp.net.data.ApiMapper
 import com.ssyijiu.weatherapp.net.data.CityBean
 
 /**
@@ -10,15 +9,12 @@ import com.ssyijiu.weatherapp.net.data.CityBean
  */
 
 
-class WeatherTask(private val cityId: String) : Task<CityBean> {
+class WeatherTask(private val cityId: Long,
+                  val dataProvider: WeatherProvider = WeatherProvider()) : Task<CityBean> {
 
-    override fun execute(): CityBean {
+    override fun execute(): CityBean = dataProvider.requestWeatherByCityId(cityId, DAYS)
 
-        // request net get DTO
-        val forecastRequest = WeatherRequest(cityId)
-
-        // convert DTO to VO
-        return ApiMapper().convert(
-            forecastRequest.request())
+    companion object {
+        val DAYS = 7
     }
 }

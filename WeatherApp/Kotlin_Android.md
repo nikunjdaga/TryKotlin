@@ -671,6 +671,7 @@
       val list = listOf(1, 2, 3, 4, 5, 6)
       val listRepeated = listOf(2, 2, 3, 4, 5, 5, 6)
       // merge 没找到这个操作符
+  ```
 
 
       // partition，根据一个函数将集合分成两个，返回一个 Pair
@@ -685,7 +686,7 @@
       // plus，可以用 + 代替，合并两个集合
       println(list.plus(listOf(7, 8)))   // [1, 2, 3, 4, 5, 6, 7, 8]
       println(list + listOf(7, 8, 9))    // [1, 2, 3, 4, 5, 6, 7, 8, 9]
-
+    
       // zip，返回由 pair组成的 List，每个 pair由两个集合中相同 index的元素组成。
       // 这个返回的List的大小由最小的那个集合决定。
       println(list.zip(listOf(7, 8)))    // [(1, 7), (2, 8)]
@@ -755,3 +756,88 @@
   - 记住，如果你使用了 `!!`，可能是因为你确信对象不可能为null，如果是这样，请定义为非null。
 
 - 使用 DataSource 来实现获取数据的逻辑
+
+  ```kotlin
+  // 先占坑
+  ```
+
+  ​
+
+- if 表达式
+
+  ```kotlin
+  // if 表达式总会返回一个值
+  val z = if (condition) x else y
+  ```
+
+- when 表达式
+
+  ```kotlin
+  // 使用 else 覆盖其他分支
+  when (x){
+      1 -> print("x == 1") 
+      2 -> print("x == 2") 
+      else -> {
+          print("I'm a block")
+          print("x is neither 1 nor 2")
+      }
+  }
+
+  // 使用 , 并列返回，when 可以返回一个直接使用的值
+  val result = when (x) {
+      0, 1 -> "binary"
+      else -> "error"
+  }
+
+  // 可以检查参数类型，可以自动转型
+  when(view) {
+      is TextView -> view.setText("I'm a TextView")
+      is EditText -> toast("EditText value: ${view.getText()}")
+      is ViewGroup -> toast("Number of children: ${view.getChildCount()} ")
+      else -> view.visibility = View.GONE
+  }
+
+  // 可以匹配区间
+  val cost = when(x) {
+      in 1..10 -> "cheap"
+      in 10..100 -> "regular"
+      in 100..1000 -> "expensive"
+      in specialValues -> "special value!"
+      else -> "not rated"
+  }
+
+  // 可以不使用参数，完全代替 if else
+  valres = when s{
+      x in 1..10 -> "cheap"
+      s.contains("hello") -> "it's a welcome!"
+      v is ViewGroup -> "child count: ${v.getChildCount()}"
+      else -> ""
+  }
+  ```
+
+  - Ranges
+
+    ```kotlin
+    // x >=1 && x<= 10
+    if (i in 0..10)
+        println(i)
+
+    // 遍历
+    for (i in 0..10)
+        println(i)
+
+    // 使用 downTo 反向遍历
+    for(i in 10 downTo 0)
+        println(i)
+
+    // 相当与 i += 2
+    for (i in 1..4 step 2) println(i)
+
+    // 遍历 [1,4)
+    for (i in 0 until 4) println(i)  
+
+    // Ranges 配和 map 使用获取一个 List<View>
+    val views = (0..viewGroup.childCount - 1).map { viewGroup.getChildAt(it) }
+    ```
+
+    ​

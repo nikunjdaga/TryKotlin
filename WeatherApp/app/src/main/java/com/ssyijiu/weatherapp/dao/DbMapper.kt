@@ -20,12 +20,12 @@ class DbMapper {
         WeatherBean(date, description, high, low, iconUrl)
     }
 
-    fun convert2CityModel(cityId: String, cityVO: CityBean) = with(cityVO) {
+    fun convert2CityModel(cityId: Long, cityVO: CityBean) = with(cityVO) {
         val daily = weatherBeanList.map { convert2WeatherModel(cityId, it) }
         CityModel(cityId, city, country, daily)
     }
 
-    private fun convert2WeatherModel(cityId: String, weatherVO: WeatherBean) =
+    private fun convert2WeatherModel(cityId: Long, weatherVO: WeatherBean) =
         with(weatherVO) {
             WeatherModel(date, description, high, low, iconUrl, cityId)
         }

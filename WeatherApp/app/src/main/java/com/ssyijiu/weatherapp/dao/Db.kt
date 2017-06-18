@@ -1,6 +1,7 @@
 package com.ssyijiu.weatherapp.dao
 
 import android.database.sqlite.SQLiteDatabase
+import com.ssyijiu.library.MLog
 import com.ssyijiu.weatherapp.net.data.CityBean
 import org.jetbrains.anko.db.MapRowParser
 import org.jetbrains.anko.db.SelectQueryBuilder
@@ -19,7 +20,7 @@ class Db(
     val dbMapper: DbMapper = DbMapper()) {
 
     // 读取数据
-    fun requestWeather(cityId: String, days: Int) = dbHelper.use {
+    fun requestWeather(cityId: Long, date: Long) = dbHelper.use {
 
         // SQL，查询某个城市某个时间段的天气详情
         val sql = "${WeatherTable.CITY_ID} = ? " +
@@ -28,7 +29,7 @@ class Db(
         val weatherList = select(WeatherTable.NAME)
             // 返回 SelectQueryBuilder，这里面封装了各种查询条件
             // 调用 parse 系列函数的时候真正的执行 SQL 语句，返回 Cursor
-            .whereSimple(sql, cityId.toString(), days.toString())
+            .whereSimple(sql, cityId.toString(), date.toString())
 
             // it 是 parseRow 的参数 columns，是一个 map
             // 调用 columns HashMap(Map<? extends K, ? extends V> m) 创建 HashMap
@@ -48,7 +49,7 @@ class Db(
 
 
     // 保存数据
-    fun saveForecast(cityId: String, cityBean: CityBean) = dbHelper.use {
+    fun saveForecast(cityId: Long, cityBean: CityBean) = dbHelper.use {
 
         // 删除所有数据
         clear(CityTable.NAME)
@@ -56,6 +57,8 @@ class Db(
 
         // CityBean -> CityModel
         with(dbMapper.convert2CityModel(cityId, cityBean)) {
+
+            MLog.i("cityId = $cityId")
 
             insert(CityTable.NAME, *map.toVarargArray())
 

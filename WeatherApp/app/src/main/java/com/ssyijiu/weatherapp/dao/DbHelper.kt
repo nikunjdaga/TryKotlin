@@ -33,7 +33,7 @@ class DbHelper(context: Context = App.instance) : ManagedSQLiteOpenHelper(
             CityTable.COUNTRY to TEXT)
 
         db.createTable(WeatherTable.NAME, true,
-            WeatherTable.ID to INTEGER + PRIMARY_KEY + AUTOINCREMENT,
+            WeatherTable.ID to INTEGER + PRIMARY_KEY,
             WeatherTable.DATE to INTEGER,
             WeatherTable.DESCRIPTION to TEXT,
             WeatherTable.HIGH to INTEGER,
