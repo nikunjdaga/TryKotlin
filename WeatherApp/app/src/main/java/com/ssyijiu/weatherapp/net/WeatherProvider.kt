@@ -40,8 +40,10 @@ class WeatherProvider(val sources: List<WeatherDataSource> =
     // 参数是一个 lambda T -> R
     // 返回值是 R
     fun <T, R : Any> Iterable<T>.firstResult(predicate: (T) -> R?): R {
-        for (element in this) {
-            val result = predicate(element)
+
+
+        for (it in this) {
+            val result = predicate(it)
             if (result != null) return result
         }
         throw NoSuchElementException("No element matching predicate was found.")
