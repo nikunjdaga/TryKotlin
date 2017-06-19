@@ -8,7 +8,7 @@ package com.ssyijiu.weatherapp.net.data
 
 
 data class CityBean(val city: String, val country: String,
-                    val weatherBeanList: List<com.ssyijiu.weatherapp.net.data.WeatherBean>) {
+                    val weatherBeanList: List<WeatherBean>) {
 
     // 重载 get 方法
     operator fun get(position: Int) = weatherBeanList[position]

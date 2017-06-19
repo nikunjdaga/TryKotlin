@@ -36,6 +36,9 @@ class WeatherProvider(val sources: List<WeatherDataSource> =
         = sources.firstResult { data(it) }
 
     // 返回第一个不是 null 结果，修改自 firstOrNull 方法
+    // 集合的类型是 T
+    // 参数是一个 lambda T -> R
+    // 返回值是 R
     fun <T, R : Any> Iterable<T>.firstResult(predicate: (T) -> R?): R {
         for (element in this) {
             val result = predicate(element)
