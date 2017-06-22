@@ -6,6 +6,8 @@
       <w>datas</w>
       <w>joinpeople</w>
       <w>joinprice</w>
+      <w>kingprice</w>
+      <w>kingtime</w>
     </words>
   </dictionary>
 </component>
