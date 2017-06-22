@@ -35,17 +35,13 @@ class WeatherProvider(val sources: List<WeatherDataSource> =
     fun <T : Any> requestWeatherDetailed(data: (WeatherDataSource) -> T): T
         = sources.firstResult { data(it) }
 
+
     // 返回第一个不是 null 结果，修改自 firstOrNull 方法
-    // 集合的类型是 T
-    // 参数是一个 lambda T -> R
-    // 返回值是 R
+    // 参数是一个 lambda,这个 lambda 将 T 转化成 R
     fun <T, R : Any> Iterable<T>.firstResult(predicate: (T) -> R?): R {
 
-
-        for (it in this) {
-            val result = predicate(it)
-            if (result != null) return result
-        }
+        this.mapNotNull { it -> predicate(it) }
+            .forEach { return it }
         throw NoSuchElementException("No element matching predicate was found.")
     }
 }

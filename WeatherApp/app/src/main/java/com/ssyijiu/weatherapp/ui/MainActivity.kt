@@ -25,9 +25,7 @@ class MainActivity : AppCompatActivity() {
             val result = WeatherTask(94043).execute()
             uiThread {
                 rvWeather.adapter = WeatherAdapter(result) {
-                    WeatherProvider().requestWeatherDetailed {
-                        it
-                    }
+                    it.date
                 }
             }
         }

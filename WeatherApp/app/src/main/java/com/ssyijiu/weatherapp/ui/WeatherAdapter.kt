@@ -17,7 +17,12 @@ import kotlinx.android.synthetic.main.item_forecast.view.*
  * Email  : lxmyijiu@163.com
  */
 
+
 class WeatherAdapter(val datas: CityBean, val itemClick: (WeatherBean) -> Unit) : RecyclerView.Adapter<WeatherAdapter.ViewHolder>() {
+
+    // itemClick 是一个 lambda
+    // 这个 lambda 的作用是[操作一个 WeatherBean，返回 Unit]
+    // 调用方法 itemClick(weatherBean)
 
     override fun getItemCount() = datas.size()
 
@@ -46,6 +51,8 @@ class WeatherAdapter(val datas: CityBean, val itemClick: (WeatherBean) -> Unit) 
                 itemView.description.text = description
                 itemView.maxTemperature.text = high.toString()
                 itemView.minTemperature.text = low.toString()
+
+                // setOnClickListener 可以接收一个 lambda
                 itemView.setOnClickListener { itemClick(this) }
             }
         }
