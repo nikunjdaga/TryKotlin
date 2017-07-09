@@ -141,11 +141,13 @@
   interface OnItemClickListener {
     	operator fun invoke(forecast: Forecast)
   }
+
+  // 这里会经常和 lambda 表达式结合
   ```
 
   ​
 
-- 扩展函数中的操作符
+- 扩展函数中的操作符重载
 
   ```Kotlin
   // 为 ViewGroup 扩展一个方法，重载 get
@@ -164,7 +166,7 @@
   val View.ctx:Context
       get() = context
 
-  // 写一个 ViewExtensions.kt 完全不用 UIUtils 了
+  // 写一个 ViewExtensions.kt 完全不用 UiUtils 了
   ```
 
 - 创建一个匿名内部类
@@ -172,12 +174,12 @@
   ```kotlin
   // 写一个接口
   interface OnItemClickListener {
-  	operator fun invoke(forecast: Forecast)
+  	fun onClick(forecast: Forecast)
   }
 
   // 创建这个接口的匿名内部类
   object : OnItemClickListener {
-    	override fun invoke(forecast: Forecast) {
+    	override fun onClick(forecast: Forecast) {
       	toast(forecast.date)
   }
   ```
@@ -230,6 +232,14 @@
   ```
 
 
+
+- 举一个🌰来看下 lambda 的烟花
+
+  ```kotlin
+
+  ```
+
+  ​
 
 - 创建 Adapter
 
