@@ -18,7 +18,7 @@ import kotlinx.android.synthetic.main.item_forecast.view.*
  */
 
 
-class WeatherAdapter(val datas: CityBean) : RecyclerView.Adapter<WeatherAdapter.ViewHolder>() {
+class WeatherListAdapter(val datas: CityBean) : RecyclerView.Adapter<WeatherListAdapter.ViewHolder>() {
 
     // onItemClickListener 是一个 lambda
     // 这个 lambda 的作用是[ 操作一个 WeatherBean，返回 Unit ]
@@ -31,7 +31,7 @@ class WeatherAdapter(val datas: CityBean) : RecyclerView.Adapter<WeatherAdapter.
 
 
         val view = LayoutInflater.from(parent.ctx)
-            .inflate(R.layout.item_forecast, parent, false)
+            .inflate(R.layout.item_weather_list, parent, false)
         return ViewHolder(view, itemClickListener)
     }
 

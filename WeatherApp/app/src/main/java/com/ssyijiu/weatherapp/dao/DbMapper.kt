@@ -16,7 +16,7 @@ class DbMapper {
         CityBean(city, country, weatherVOList)
     }
 
-    private fun convert2WeatherBean(weatherModel: WeatherModel) = with(weatherModel) {
+    fun convert2WeatherBean(weatherModel: WeatherModel) = with(weatherModel) {
         WeatherBean(date, description, high, low, iconUrl)
     }
 
@@ -25,7 +25,7 @@ class DbMapper {
         CityModel(cityId, city, country, daily)
     }
 
-    private fun convert2WeatherModel(cityId: Long, weatherVO: WeatherBean) =
+    fun convert2WeatherModel(cityId: Long, weatherVO: WeatherBean) =
         with(weatherVO) {
             WeatherModel(date, description, high, low, iconUrl, cityId)
         }

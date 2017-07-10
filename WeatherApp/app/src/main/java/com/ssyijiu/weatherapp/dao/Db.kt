@@ -19,8 +19,7 @@ class Db(
     val dbHelper: DbHelper = DbHelper.instance,
     val dbMapper: DbMapper = DbMapper()) {
 
-    // 读取数据
-    fun requestWeather(cityId: Long, date: Long) = dbHelper.use {
+    fun requestWeatherList(cityId: Long, date: Long) = dbHelper.use {
 
         // SQL，查询某个城市某个时间段的天气详情
         val sql = "${WeatherTable.CITY_ID} = ? " +
@@ -48,8 +47,16 @@ class Db(
     }
 
 
-    // 保存数据
-    fun saveForecast(cityId: Long, cityBean: CityBean) = dbHelper.use {
+    fun requestWeatherDetail(weatherId: Long) = dbHelper.use {
+        val weatherModel = select(WeatherTable.NAME)
+            .whereSimple("_id = ?", weatherId.toString())
+            .parseOpt {WeatherModel(HashMap(it))}
+        if(weatherModel != null) dbMapper.convert2WeatherBean(weatherModel)
+        else null
+    }
+
+
+    fun saveWeatherList(cityId: Long, cityBean: CityBean) = dbHelper.use {
 
         // 删除所有数据
         clear(CityTable.NAME)
@@ -94,4 +101,4 @@ fun SQLiteDatabase.clear(tableName: String) {
 
 
 fun <K, V : Any> MutableMap<K, V?>.toVarargArray(): Array<out Pair<K, V>>
-    =  map({ Pair(it.key, it.value!!) }).toTypedArray()
+    = map({ Pair(it.key, it.value!!) }).toTypedArray()

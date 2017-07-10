@@ -18,13 +18,13 @@ class WeatherProvider(val sources: List<WeatherDataSource> =
         val SOURCES = listOf(WeatherDbSource(), WeatherServerSource())
     }
 
-    // 获取数据的方法
-    fun requestWeatherByCityId(cityId: Long, days: Int): CityBean
-        = sources.firstResult { requestSource(it, cityId, days) }
+    // 获取一个城市的天气列表
+    fun requestWeatherList(cityId: Long, days: Int): CityBean
+        = sources.firstResult { requestWeatherLisFromSource(it, cityId, days) }
 
 
-    private fun requestSource(source: WeatherDataSource, cityId: Long, days: Int): CityBean? {
-        val res = source.requestWeather(cityId, todayTimeSpan())
+    private fun requestWeatherLisFromSource(source: WeatherDataSource, cityId: Long, days: Int): CityBean? {
+        val res = source.requestWeatherList(cityId, todayTimeSpan())
         return if (res != null && res.size() >= days) res else null
     }
 
@@ -32,7 +32,8 @@ class WeatherProvider(val sources: List<WeatherDataSource> =
         DAY_IN_MILLIS * DAY_IN_MILLIS
 
 
-    fun <T : Any> requestWeatherDetailed(data: (WeatherDataSource) -> T): T
+    // 获取某个天气的详细信息
+    fun <T : Any> requestWeatherDetail(data: (WeatherDataSource) -> T): T
         = sources.firstResult { data(it) }
 
 

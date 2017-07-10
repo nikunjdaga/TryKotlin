@@ -12,7 +12,7 @@ import com.ssyijiu.weatherapp.net.data.CityBean
 class WeatherTask(private val cityId: Long,
                   val dataProvider: WeatherProvider = WeatherProvider()) : Task<CityBean> {
 
-    override fun execute(): CityBean = dataProvider.requestWeatherByCityId(cityId, DAYS)
+    override fun execute(): CityBean = dataProvider.requestWeatherList(cityId, DAYS)
 
     companion object {
         val DAYS = 7
