@@ -53,7 +53,7 @@ class DbHelper(context: Context = App.instance) : ManagedSQLiteOpenHelper(
     }
 
     companion object {
-        val DB_NAME = "forecast.db"
+        val DB_NAME = "weather.db"
         val DB_VERSION = 1
 
         // DbHelper 单例，懒加载，线程安全

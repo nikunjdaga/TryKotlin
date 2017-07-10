@@ -141,8 +141,6 @@
   interface OnItemClickListener {
     	operator fun invoke(forecast: Forecast)
   }
-
-  // 这里会经常和 lambda 表达式结合
   ```
 
   ​
@@ -210,15 +208,16 @@
       override fun onClick(v: View) {
           toast("Click")
       }
-  }
+  })
                           
   // 5. 在 Kotlin 中，函数式接口可以直接定义成一个 lambda
   // 函数名 listener 参数 View 返回值 Unit
+  // lambda 表达式通过参数的形式被定义在箭头的左边（用圆括号包裹），然后在箭头的右边返回结果值。
   fun setOnClickListener(listener: (View) -> Unit)
                           
   // 6. 使用 Lambdas
   view.setOnClickListener({ view -> toast("Click")})
-  // 一个lambda表达式通过参数的形式被定义在箭头的左边（被圆括号包围），然后在箭头的右边返回结果值。
+  // 整个 lambda 表达式需要放在 {} 中
   // 在这个例子中，我们接收一个View，然后返回一个Unit（没有东西)
 
   // 7. 左边参数没有用到，可以省略
@@ -233,20 +232,73 @@
 
 
 
-- 举一个🌰来看下 lambda 的烟花
+- 举一个🌰来看下 lambda 演化，给 RecyclerView 添加 Item 点击事件
 
   ```kotlin
+  // 1. 在 Adapter 中声明一个 OnItemClickListener 回调接口
+  lateinit var itemClickListener: OnItemClickListener
+
+  interface OnItemClickListener {
+    	fun onItemClick(bean: WeatherBean)
+  }
+
+  fun setOnItemClickListener(itemClickListener: OnItemClickListener) {
+   	this.itemClickListener = itemClickListener;
+  }
+
+  // 2. 给 itemView 设置点击事件
+  itemView.setOnClickListener(View.OnClickListener {
+    	itemClickListener.onItemClick(bean)
+  })
+
+  // 3. 使用
+  adapter.setOnItemClickListener(object :OnItemClickListener {
+  	override fun onItemClick(bean: WeatherBean) {
+      	toast(bean.date)
+    	}
+  })
+
+
+  // 4. 修改 2 为 lambda 形式
+  itemView.setOnClickListener {
+    	onItemClickListener.onItemClick(bean)
+  }
+
+  // 5. 在 OnItemClickListener 中使用重载的 invoke 代替 onItemClick
+  interface OnItemClickListener {
+    	operator fun invoke(bean: WeatherBean)
+  }
+
+  // 6. 再次修改 2
+  itemView.setOnClickListener {
+   	onItemClickListener(bean)
+  }
+
+  // 7. 删除 OnItemClickListener 接口，将 itemClickListener 直接声明为 lambda 形式
+  lateinit var itemClickListener: (WeatherBean) -> Unit
+  // 我们可以直接将一个函数式接口声明成 lambda 形式
+  // WeatherBean 是我们函数式接口的参数、Unit 是函数式接口的返回值
+  // 这个函数式接口的方法为 fun invoke(bean : WeatherBean) : Unit
+  // 调用直接 itemClickListener.invoke(bean) 可以简化为 itemClickListener(bean)
+
+  // 8. 使用
+  adapter.setOnItemClickListener {
+    	toast(it.date)
+  }
 
   ```
 
   ​
 
-- 创建 Adapter
+- 完整的 Adapter
 
   ```kotlin
+  class WeatherAdapter(val datas: CityBean) : RecyclerView.Adapter<WeatherAdapter.ViewHolder>() {
 
-  // 注意这里 val itemClick: (ForecastVO) -> Unit，itemClick 的类型实际是一个 lambda 表达式
-  class ForecastListAdapter(val datas: ForecastListVO, val itemClick: (ForecastVO) -> Unit) : RecyclerView.Adapter<ForecastListAdapter.ViewHolder>() {
+      // onItemClickListener 是一个 lambda
+      // 这个 lambda 的作用是 [操作一个 WeatherBean，返回 Unit]
+      // 调用方法 onItemClickListener(weatherBean)
+      lateinit var itemClickListener: (WeatherBean) -> Unit
 
       override fun getItemCount() = datas.size()
 
@@ -254,44 +306,50 @@
 
           val view = LayoutInflater.from(parent.ctx)
               .inflate(R.layout.item_forecast, parent, false)
-          return ViewHolder(view, itemClick)
+          return ViewHolder(view, itemClickListener)
       }
 
       override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-
           holder.bindForecast(datas[position])
       }
-    
-    class ViewHolder(itemView: View, val itemClick: (ForecastVO) -> Unit) :
-        RecyclerView.ViewHolder(itemView) {
 
-        fun bindForecast(forecast: ForecastVO) {
 
-            with(forecast) {
-                Picasso.with(itemView.ctx).load(iconUrl).into(itemView.icon)
-                itemView.date.text = date
-                itemView.description.text = description
-                itemView.maxTemperature.text = high.toString()
-                itemView.minTemperature.text = low.toString()
-                itemView.setOnClickListener { itemClick(this) }
-            }
-        }
-    } 
+      class ViewHolder(itemView: View, val onItemClickListener: (WeatherBean) -> Unit) : RecyclerView.ViewHolder(itemView) {
+
+          fun bindForecast(weather: WeatherBean) {
+
+              with(weather) {
+                  Picasso.with(itemView.ctx).load(iconUrl).into(itemView.icon)
+                  itemView.date.text = date
+                  itemView.description.text = description
+                  itemView.maxTemperature.text = high.toString()
+                  itemView.minTemperature.text = low.toString()
+
+                  itemView.setOnClickListener {
+                      onItemClickListener.invoke(this)
+                  }
+              }
+          }
+      }
+
+      fun setOnItemClickListener(itemClickListener: (WeatherBean) -> Unit) {
+          this.itemClickListener = itemClickListener
+      }
   }
 
-  // 使用这个 adapter
-  rvForecastList.adapter = ForecastListAdapter(result) {
-    toast(it.date)
+  // 在 Activity 中使用
+  val adapter = WeatherAdapter(result)
+    rvWeather.adapter = adapter
+    adapter.setOnItemClickListener {
+      toast(it.date)
   }
-    
   ```
 
-- 扩展函数
+- Lamdbas 的另一种使用方法
 
   ```kotlin
   // 参数声明一个 lamdba，函数名：code，参数：无，返回值：Unit
-  // inline 声明为内联函数
-  inline fun supportsLollipop(code: () -> Unit) {
+  fun supportsLollipop(code: () -> Unit) {
   	if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
       	code()
     	}
@@ -462,8 +520,8 @@
            val DB_NAME = "forecast.db"
            val DB_VERSION = 1
 
-           // ForecastDbHelper 单例，懒加载，线程安全
-           val instance: ForecastDbHelper by lazy { ForecastDbHelper() }
+           // DbHelper 单例，懒加载，线程安全
+           val instance: DbHelper by lazy { DbHelper() }
        }
    }
   ```
@@ -521,7 +579,7 @@
    list.forEach {
        print("$it 、")  // 1 、2 、3 、4 、5 、6 、
    }
-   println()
+   println()  
 
    // max，返回最大的一项
    println(list.max())  // 6
@@ -814,7 +872,7 @@
   }
 
   // 可以不使用参数，完全代替 if else
-  valres = when s{
+  valres = when {
       x in 1..10 -> "cheap"
       s.contains("hello") -> "it's a welcome!"
       v is ViewGroup -> "child count: ${v.getChildCount()}"

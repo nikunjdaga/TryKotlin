@@ -18,14 +18,12 @@ import kotlinx.android.synthetic.main.item_forecast.view.*
  */
 
 
-class WeatherAdapter(val datas: CityBean,
-                     val itemClick: OnItemClickListener
-                     // val itemClick: (WeatherBean) -> Unit
-                    ) : RecyclerView.Adapter<WeatherAdapter.ViewHolder>() {
+class WeatherAdapter(val datas: CityBean) : RecyclerView.Adapter<WeatherAdapter.ViewHolder>() {
 
-    // itemClick 是一个 lambda
-    // 这个 lambda 的作用是[操作一个 WeatherBean，返回 Unit]
-    // 调用方法 itemClick(weatherBean)
+    // onItemClickListener 是一个 lambda
+    // 这个 lambda 的作用是[ 操作一个 WeatherBean，返回 Unit ]
+    // 调用方法 onItemClickListener(weatherBean)
+    lateinit var itemClickListener: (WeatherBean) -> Unit
 
     override fun getItemCount() = datas.size()
 
@@ -34,20 +32,15 @@ class WeatherAdapter(val datas: CityBean,
 
         val view = LayoutInflater.from(parent.ctx)
             .inflate(R.layout.item_forecast, parent, false)
-        return ViewHolder(view, itemClick)
+        return ViewHolder(view, itemClickListener)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-
         holder.bindForecast(datas[position])
     }
 
 
-    class ViewHolder(itemView: View,
-                     val itemClick: OnItemClickListener
-                     // val itemClick: (WeatherBean) -> Unit
-                    ) :
-        RecyclerView.ViewHolder(itemView) {
+    class ViewHolder(itemView: View, val onItemClickListener: (WeatherBean) -> Unit) : RecyclerView.ViewHolder(itemView) {
 
         fun bindForecast(weather: WeatherBean) {
 
@@ -58,15 +51,14 @@ class WeatherAdapter(val datas: CityBean,
                 itemView.maxTemperature.text = high.toString()
                 itemView.minTemperature.text = low.toString()
 
-                // setOnClickListener 可以接收一个 lambda
-                itemView.setOnClickListener(View.OnClickListener {
-                    itemClick.onItemClick(this)
-                })
+                itemView.setOnClickListener {
+                    onItemClickListener(this)
+                }
             }
         }
     }
 
-    interface OnItemClickListener {
-        fun onItemClick(bean: WeatherBean)
+    fun setOnItemClickListener(itemClickListener: (WeatherBean) -> Unit) {
+        this.itemClickListener = itemClickListener
     }
 }

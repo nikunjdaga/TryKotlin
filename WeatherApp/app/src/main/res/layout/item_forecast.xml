@@ -8,7 +8,7 @@
     android:paddingLeft="10dp"
     android:paddingTop="@dimen/spacing_xlarge"
     android:paddingBottom="@dimen/spacing_xlarge"
-    android:background="?attr/selectableItemBackground"
+    android:background="?android:attr/selectableItemBackground"
     android:gravity="center_vertical"
     android:orientation="horizontal">
 
