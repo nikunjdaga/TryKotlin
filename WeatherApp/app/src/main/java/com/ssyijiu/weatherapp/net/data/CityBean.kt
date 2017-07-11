@@ -16,5 +16,5 @@ data class CityBean(val city: String, val country: String,
     fun size() = weatherBeanList.size
 }
 
-data class WeatherBean(val id: Long, val date: String, val description: String, val high: Int,
+data class WeatherBean(val date: String, val description: String, val high: Int,
                        val low: Int, val iconUrl: String)

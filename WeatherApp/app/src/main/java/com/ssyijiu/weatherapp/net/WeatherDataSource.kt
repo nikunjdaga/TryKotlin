@@ -1,16 +1,13 @@
 package com.ssyijiu.weatherapp.net
 
 import com.ssyijiu.weatherapp.dao.Db
-import com.ssyijiu.weatherapp.dao.WeatherTable
-import com.ssyijiu.weatherapp.dao.parseOpt
 import com.ssyijiu.weatherapp.net.data.ApiMapper
 import com.ssyijiu.weatherapp.net.data.CityBean
 import com.ssyijiu.weatherapp.net.data.WeatherBean
-import org.jetbrains.anko.db.select
 
 /**
  * Created by ssyijiu on 2017/6/15.
- * Github : ssyijiu
+ * GitHub : ssyijiu
  * Email  : lxmyijiu@163.com
  *
  * 1. 从数据库获取数据
@@ -25,7 +22,7 @@ import org.jetbrains.anko.db.select
 /** 数据源接口 */
 interface WeatherDataSource {
     fun requestWeatherList(cityId: Long, date: Long): CityBean?
-    fun requestWeatherDetail(weatherId: Long): WeatherBean?
+    fun requestWeatherDetail(cityId: Long, date: String): WeatherBean?
 }
 
 
@@ -36,18 +33,20 @@ class WeatherDbSource(val db: Db = Db()) : WeatherDataSource {
         return db.requestWeatherList(cityId, date)
     }
 
-    override fun requestWeatherDetail(weatherId: Long): WeatherBean? = null
+    override fun requestWeatherDetail(cityId: Long, date: String): WeatherBean? {
+        return db.requestWeatherDetail(cityId, date)
+    }
+
 }
 
 
 /** 服务器数据源 */
 class WeatherServerSource(val db: Db = Db()) : WeatherDataSource {
-    override fun requestWeatherDetail(weatherId: Long): WeatherBean? = null
 
     override fun requestWeatherList(cityId: Long, date: Long): CityBean? {
 
         // request net get DTO
-        val forecastRequest = WeatherRequest(cityId)
+        val forecastRequest = WeatherListRequest(cityId)
 
         // convert DTO to VO
         val cityBean = ApiMapper().convert(
@@ -56,4 +55,6 @@ class WeatherServerSource(val db: Db = Db()) : WeatherDataSource {
         db.saveWeatherList(cityId, cityBean)
         return cityBean
     }
+
+    override fun requestWeatherDetail(cityId: Long, date: String): WeatherBean? = null
 }

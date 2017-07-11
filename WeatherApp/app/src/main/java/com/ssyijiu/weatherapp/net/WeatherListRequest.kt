@@ -12,7 +12,7 @@ import java.net.URL
  * 请求网络，获取 DTO
  */
 
-class WeatherRequest(val cityId: Long) {
+class WeatherListRequest(val cityId: Long) {
 
     // url
     companion object {

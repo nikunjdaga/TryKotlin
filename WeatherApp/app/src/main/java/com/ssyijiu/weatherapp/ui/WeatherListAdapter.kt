@@ -9,7 +9,7 @@ import com.ssyijiu.weatherapp.R
 import com.ssyijiu.weatherapp.net.data.CityBean
 import com.ssyijiu.weatherapp.net.data.WeatherBean
 import com.ssyijiu.weatherapp.extensions.ctx
-import kotlinx.android.synthetic.main.item_forecast.view.*
+import kotlinx.android.synthetic.main.item_weather_list.view.*
 
 /**
  * Created by ssyijiu on 2017/6/3.

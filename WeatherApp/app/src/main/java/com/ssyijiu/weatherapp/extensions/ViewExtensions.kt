@@ -1,6 +1,7 @@
 package com.ssyijiu.weatherapp.extensions
 
 import android.content.Context
+import android.support.v4.content.ContextCompat
 import android.view.View
 
 /**
@@ -14,3 +15,5 @@ import android.view.View
 // ctx 返回 context
 val View.ctx:Context
     get() = context
+
+fun Context.color(res: Int): Int = ContextCompat.getColor(this, res)

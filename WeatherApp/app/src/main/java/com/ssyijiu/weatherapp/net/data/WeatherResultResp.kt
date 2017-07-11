@@ -14,8 +14,8 @@ data class CityResp(val id: Long, val name: String, val coord: com.ssyijiu.weath
 
 data class CoordinatesResp(val lon: Float, val lat: Float)
 
-data class WeatherResp(val dt: Long, val temp: com.ssyijiu.weatherapp.net.data.TemperatureResp, val pressure: Float,
-                       val humidity: Int, val weather: List<com.ssyijiu.weatherapp.net.data.WeatherDescResp>,
+data class WeatherResp(val dt: Long, val temp: TemperatureResp, val pressure: Float,
+                       val humidity: Int, val weather: List<WeatherDescResp>,
                        val speed: Float, val deg: Int, val clouds: Int,
                        val rain: Float)
 

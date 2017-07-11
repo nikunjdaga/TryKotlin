@@ -1,6 +1,7 @@
 package com.ssyijiu.weatherapp.dao
 
 import android.database.sqlite.SQLiteDatabase
+import android.text.method.TextKeyListener.clear
 import com.ssyijiu.library.MLog
 import com.ssyijiu.weatherapp.net.data.CityBean
 import org.jetbrains.anko.db.MapRowParser
@@ -47,12 +48,17 @@ class Db(
     }
 
 
-    fun requestWeatherDetail(weatherId: Long) = dbHelper.use {
+    fun requestWeatherDetail(cityId: Long, date: String) = dbHelper.use {
+        val sql = "${WeatherTable.CITY_ID} = ? " +
+            "AND ${WeatherTable.DATE} = ?"
+
         val weatherModel = select(WeatherTable.NAME)
-            .whereSimple("_id = ?", weatherId.toString())
-            .parseOpt {WeatherModel(HashMap(it))}
-        if(weatherModel != null) dbMapper.convert2WeatherBean(weatherModel)
-        else null
+            .whereSimple(sql, cityId.toString(), date)
+            .parseOpt { WeatherModel(HashMap(it)) }
+        if(weatherModel != null)
+            dbMapper.convert2WeatherBean(weatherModel)
+        else
+            null
     }
 
 

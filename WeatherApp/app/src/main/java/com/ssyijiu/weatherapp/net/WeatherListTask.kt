@@ -9,8 +9,8 @@ import com.ssyijiu.weatherapp.net.data.CityBean
  */
 
 
-class WeatherTask(private val cityId: Long,
-                  val dataProvider: WeatherProvider = WeatherProvider()) : Task<CityBean> {
+class WeatherListTask(private val cityId: Long,
+                       val dataProvider: WeatherProvider = WeatherProvider()) : Task<CityBean> {
 
     override fun execute(): CityBean = dataProvider.requestWeatherList(cityId, DAYS)
 
