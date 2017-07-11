@@ -5,9 +5,9 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import com.ssyijiu.weatherapp.R
 import com.ssyijiu.weatherapp.net.WeatherListTask
+import com.ssyijiu.weatherapp.ui.adapter.WeatherListAdapter
 import kotlinx.android.synthetic.main.activity_weather_list.*
 import org.jetbrains.anko.doAsync
-import org.jetbrains.anko.toast
 import org.jetbrains.anko.uiThread
 
 class WeatherListActivity : AppCompatActivity() {
@@ -30,7 +30,6 @@ class WeatherListActivity : AppCompatActivity() {
                 }
             }
         }
-
     }
 
     companion object {

@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.widget.TextView
 import com.squareup.picasso.Picasso
+import com.ssyijiu.library.MLog
 import com.ssyijiu.weatherapp.R
 import com.ssyijiu.weatherapp.extensions.color
 import com.ssyijiu.weatherapp.net.WeatherDetailTask
@@ -38,11 +39,15 @@ class WeatherDetailActivity : AppCompatActivity() {
         with(weatherBean) {
             Picasso.with(ctx).load(iconUrl).into(icon)
             weatherDescription.text = description
-            bindTemperature(high to maxTemperature, low to minTemperature)
+            maxTemperature.text = "$high"
+            minTemperature.text = "$low"
+
+            //bindTemperature(high to maxTemperature, low to minTemperature)
         }
     }
 
 
+    // 非常好的设计，把数据和控件结合起来
     private fun bindTemperature(vararg views: Pair<Int, TextView>) = views.forEach {
         it.second.text = "${it.first}"
         it.second.setTextColor(

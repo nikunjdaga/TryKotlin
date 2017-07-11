@@ -49,6 +49,9 @@ class Db(
 
 
     fun requestWeatherDetail(cityId: Long, date: String) = dbHelper.use {
+
+        MLog.i("requestWeatherDetail")
+
         val sql = "${WeatherTable.CITY_ID} = ? " +
             "AND ${WeatherTable.DATE} = ?"
 

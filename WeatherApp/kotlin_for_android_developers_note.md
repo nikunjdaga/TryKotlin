@@ -257,6 +257,7 @@
       	toast(bean.date)
     	}
   })
+  ```
 
 
   // 4. 修改 2 为 lambda 形式
@@ -903,6 +904,20 @@
 
   // Ranges 配和 map 使用获取一个 List<View>
   val views = (0..viewGroup.childCount - 1).map { viewGroup.getChildAt(it) }
+  ```
+
+- try catch 表达式
+
+  ```kotlin
+  val x = 
+  	try { 
+        doSomething()
+        "try"
+      } catch(e : Exception) {
+        "catch"
+      }
+
+  // 返回 try 或者 catch 代码块中最后一个表达式
   ```
 
   ​
