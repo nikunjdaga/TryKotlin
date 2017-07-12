@@ -8,6 +8,7 @@ import com.ssyijiu.weatherapp.net.WeatherListTask
 import com.ssyijiu.weatherapp.ui.adapter.WeatherListAdapter
 import kotlinx.android.synthetic.main.activity_weather_list.*
 import org.jetbrains.anko.doAsync
+import org.jetbrains.anko.startActivity
 import org.jetbrains.anko.uiThread
 
 class WeatherListActivity : AppCompatActivity() {
@@ -25,8 +26,11 @@ class WeatherListActivity : AppCompatActivity() {
                 val adapter = WeatherListAdapter(result)
                 rvWeather.adapter = adapter
                 adapter.setOnItemClickListener {
-                    WeatherDetailActivity.start(this@WeatherListActivity,
-                        id, it.date, it.description)
+                    WeatherDetailActivity.start(this@WeatherListActivity, id, it.date)
+
+//                    startActivity<WeatherDetailActivity>(
+//                        WeatherDetailActivity.CITY_ID to id,
+//                        WeatherDetailActivity.CITY_DATA to it.date)
                 }
             }
         }

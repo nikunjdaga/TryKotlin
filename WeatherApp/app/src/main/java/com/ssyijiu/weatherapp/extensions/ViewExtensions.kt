@@ -16,4 +16,5 @@ import android.view.View
 val View.ctx:Context
     get() = context
 
-fun Context.color(res: Int): Int = ContextCompat.getColor(this, res)
+fun Context.color(res: Int): Int
+    = ContextCompat.getColor(this, res)

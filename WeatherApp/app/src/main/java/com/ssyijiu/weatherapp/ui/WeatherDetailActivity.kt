@@ -41,8 +41,10 @@ class WeatherDetailActivity : AppCompatActivity() {
             weatherDescription.text = description
             maxTemperature.text = "$high"
             minTemperature.text = "$low"
+            maxTemperature.setTextColor(color(highColor))
+            minTemperature.setTextColor(color(lowColor))
 
-            //bindTemperature(high to maxTemperature, low to minTemperature)
+            // bindTemperature(high to maxTemperature, low to minTemperature)
         }
     }
 
@@ -61,13 +63,11 @@ class WeatherDetailActivity : AppCompatActivity() {
     companion object {
         val CITY_ID = "DetailActivity:cityId"
         val CITY_DATA = "DetailActivity:cityDate"
-        val CITY_NAME = "DetailActivity:cityName"
 
-        fun start(context: Context, cityId: Long, cityDate: String, cityName: String) {
+        fun start(context: Context, cityId: Long, cityDate: String) {
             val intent = Intent(context, WeatherDetailActivity::class.java)
             intent.putExtra(CITY_ID, cityId)
             intent.putExtra(CITY_DATA, cityDate)
-            intent.putExtra(CITY_NAME, cityName)
             context.startActivity(intent)
         }
     }
