@@ -920,4 +920,21 @@
   // 返回 try 或者 catch 代码块中最后一个表达式
   ```
 
+- 打开一个 Activity
+
+  ```kotlin
+  startActivity<WeatherDetailActivity>(
+                          WeatherDetailActivity.CITY_ID to id,
+                          WeatherDetailActivity.CITY_DATA to it.date)
+
+  // 给 Context 添加一个扩展方法，接受一个可变参数 Pair<String,Any> 用来给 Intent 传递数据
+  // inline 函数，泛型声明 <reified T: Activity> 这样可以直接通过 T::class.java 获取泛型的 class
+  inline fun <reified T: Activity> Context.startActivity(vararg params: Pair<String, Any>) {
+      AnkoInternals.internalStartActivity(this, T::class.java, params)
+  }
+
+  // 更喜欢下面这种写法
+   WeatherDetailActivity.start(this@WeatherListActivity, id, it.date)
+  ```
+
   ​
