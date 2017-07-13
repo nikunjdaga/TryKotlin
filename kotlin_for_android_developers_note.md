@@ -937,4 +937,16 @@
    WeatherDetailActivity.start(this@WeatherListActivity, id, it.date)
   ```
 
-  ​
+- 去掉 ActionBar 和 Title
+
+  ```xml
+  parent="Theme.AppCompat.Light.NoActionBar"
+
+  // 实际上
+  <style name="Theme.AppCompat.Light.NoActionBar">
+  	<item name="windowActionBar">false</item>
+  	<item name="windowNoTitle">true</item>
+  </style>
+  ```
+
+- android:clipToPadding="false"    // RecyclerView 属性，false 表示控件可以在 padding 中绘制

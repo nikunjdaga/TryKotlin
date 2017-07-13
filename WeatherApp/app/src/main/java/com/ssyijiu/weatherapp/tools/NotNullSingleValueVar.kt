@@ -1,4 +1,4 @@
-package com.ssyijiu.weatherapp.extensions
+package com.ssyijiu.weatherapp.tools
 
 import com.ssyijiu.library.MLog
 import kotlin.properties.ReadWriteProperty

@@ -8,7 +8,7 @@ import com.squareup.picasso.Picasso
 import com.ssyijiu.weatherapp.R
 import com.ssyijiu.weatherapp.net.data.CityBean
 import com.ssyijiu.weatherapp.net.data.WeatherBean
-import com.ssyijiu.weatherapp.extensions.ctx
+import com.ssyijiu.weatherapp.tools.ctx
 import kotlinx.android.synthetic.main.item_weather_list.view.*
 
 /**

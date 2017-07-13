@@ -10,10 +10,16 @@ package com.ssyijiu.weatherapp.net.data
 data class CityBean(val city: String, val country: String,
                     val weatherBeanList: List<WeatherBean>) {
 
-    // 重载 get 方法
-    operator fun get(position: Int) = weatherBeanList[position]
+    val mDatas : MutableList<WeatherBean> = arrayListOf()
+    init {
+        mDatas.addAll(weatherBeanList)
+        mDatas.addAll(weatherBeanList)
+    }
 
-    fun size() = weatherBeanList.size
+    // 重载 get 方法
+    operator fun get(position: Int) = mDatas[position]
+
+    fun size() = mDatas.size
 }
 
 data class WeatherBean(val date: String, val description: String, val high: Int,

@@ -1,7 +1,7 @@
 package com.ssyijiu.weatherapp
 
 import android.app.Application
-import com.ssyijiu.weatherapp.extensions.DelegatesExt
+import com.ssyijiu.weatherapp.tools.DelegatesExt
 
 /**
  * Created by ssyijiu on 2017/6/4.
