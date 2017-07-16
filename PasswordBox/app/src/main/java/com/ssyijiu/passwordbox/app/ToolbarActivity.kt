@@ -3,9 +3,11 @@ package com.ssyijiu.passwordbox.app
 import android.os.Bundle
 import android.support.annotation.LayoutRes
 import android.support.v7.widget.Toolbar
+import android.view.Menu
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import com.ssyijiu.passwordbox.R
 
 
@@ -62,6 +64,16 @@ abstract class ToolbarActivity : BaseActivity() {
 
     open protected fun toolbarMode(): Int {
         return ToolbarMode.MODE_BACK
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_main,menu)
+        mToolbar.setOnMenuItemClickListener {
+            Toast.makeText(mContext,it.title,Toast.LENGTH_SHORT).show()
+            true
+        }
+
+        return super.onCreateOptionsMenu(menu)
     }
 
     protected abstract fun initContentView(contentView: View)

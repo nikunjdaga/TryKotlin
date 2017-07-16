@@ -1,11 +1,15 @@
 package com.ssyijiu.weatherapp.tools
 
+import android.icu.text.IDNA
 import android.support.v7.graphics.drawable.DrawerArrowDrawable
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
 import android.view.View
+import com.ssyijiu.library.MLog
 import com.ssyijiu.weatherapp.App
 import com.ssyijiu.weatherapp.R
+import org.jetbrains.anko.AnkoLogger
+import org.jetbrains.anko.info
 import org.jetbrains.anko.toast
 
 
@@ -16,6 +20,7 @@ import org.jetbrains.anko.toast
  */
 interface ToolbarManager {
     val toolbar: Toolbar
+
 
     var toolbarTitle: String
         get() = toolbar.title.toString()
@@ -39,9 +44,8 @@ interface ToolbarManager {
         toolbar.setNavigationOnClickListener { up() }
     }
 
-    private fun createUpDrawable() = with(DrawerArrowDrawable(toolbar.ctx)) {
+    private fun createUpDrawable() = DrawerArrowDrawable(toolbar.ctx).apply {
         progress = 1f
-        this
     }
 
     fun attachToScroll(recyclerView: RecyclerView) {

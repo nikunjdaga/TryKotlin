@@ -18,8 +18,9 @@ class WeatherProvider(val sources: List<WeatherDataSource> =
     }
 
     // 获取一个城市的天气列表
-    fun requestWeatherList(cityId: Long, days: Int): CityBean
-        = sources.firstResult { requestWeatherLisFromSource(it, cityId, days) }
+    fun requestWeatherList(cityId: Long, days: Int): CityBean?
+        = sources.map { requestWeatherLisFromSource(it, cityId, days) }
+                 .firstOrNull()
 
 
     private fun requestWeatherLisFromSource(source: WeatherDataSource, cityId: Long, days: Int): CityBean? {
@@ -29,22 +30,14 @@ class WeatherProvider(val sources: List<WeatherDataSource> =
 
 
     // 获取某个天气的详细信息
-    fun requestWeatherDetail(cityId: Long, date: String): WeatherBean
-        = sources.firstResult { requestWeatherDetailFromSource(it, cityId, date) }
+    fun requestWeatherDetail(cityId: Long, date: String): WeatherBean?
+        = sources.map { requestWeatherDetailFromSource(it, cityId, date) }
+                 .firstOrNull()
 
 
     private fun requestWeatherDetailFromSource(source: WeatherDataSource, cityId: Long, date: String): WeatherBean?
         = source.requestWeatherDetail(cityId, date)
 
-
-    // 返回第一个不是 null 结果，修改自 firstOrNull 方法
-    // 参数是一个 lambda,这个 lambda 将 T 转化成 R
-    private fun <T, R : Any> Iterable<T>.firstResult(predicate: (T) -> R?): R {
-
-        this.mapNotNull { it -> predicate(it) }
-            .forEach { return it }
-        throw NoSuchElementException("No element matching predicate was found.")
-    }
 
     private fun todayTimeSpan() = System.currentTimeMillis()
 }

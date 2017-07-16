@@ -950,3 +950,82 @@
   ```
 
 - android:clipToPadding="false"    // RecyclerView 属性，false 表示控件可以在 padding 中绘制
+
+- Toolbar 主题
+
+  ```Xml
+  // Toolbar 暗色主题，文字是白色
+  app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+
+  // 溢出菜单白色主题，文字是黑色
+  app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+  ```
+
+- 使用接口管理 Toolbar
+
+  ```kotlin
+  interface ToolbarManager {
+      val toolbar: Toolbar
+
+      var toolbarTitle: String
+          get() = toolbar.title.toString()
+          set(value) {
+              toolbar.title = value
+          }
+
+      fun initToolbar() {
+          toolbar.inflateMenu(R.menu.menu_main)
+          toolbar.setOnMenuItemClickListener {
+              when (it.itemId) {
+                  R.id.action_settings -> App.instance.toast("Settings")
+                  else -> App.instance.toast("Unknown option")
+              }
+              true
+          }
+      }
+
+      fun enableHomeAsUp(up: () -> Unit) {
+          toolbar.navigationIcon = createUpDrawable()
+          toolbar.setNavigationOnClickListener { up() }
+      }
+
+      private fun createUpDrawable() = with(DrawerArrowDrawable(toolbar.ctx)) {
+          progress = 1f
+          this
+      }
+
+      fun attachToScroll(recyclerView: RecyclerView) {
+          recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+              override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
+                  MLog.i(dy)
+                  if (dy > 0) toolbar.slideExit() else toolbar.slideEnter()
+              }
+          })
+      }
+
+      fun View.slideExit() {
+          if (translationY == 0f) animate().translationY(-height.toFloat())
+      }
+
+      fun View.slideEnter() {
+          if (translationY < 0f) animate().translationY(0f)
+      }
+  }
+
+  // 1. 在 xml 布局中添加 toolbar
+  // 2. 在 Activity/Fragment 中初始化 toolbar
+  // 3. 实现 ToolbarManager 接口
+  // 4. 直接调用 ToolbarManager 方法
+  ```
+
+- apply 用法
+
+  ```kotlin
+  val textView = TextView(context).apply {
+      text = "Hello"
+      hint = "Hint"
+      textColor = android.R.color.white
+  }
+  ```
+
+  ​

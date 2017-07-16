@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
+import android.util.DebugUtils
 import android.widget.TextView
 import com.squareup.picasso.Picasso
 import com.ssyijiu.weatherapp.R
@@ -37,7 +38,10 @@ class WeatherDetailActivity : AppCompatActivity(),ToolbarManager {
         doAsync {
             val weatherBean = WeatherDetailTask(cityId, cityDate).execute()
             uiThread {
-                bindWeather(weatherBean)
+                weatherBean?.let {
+                    bindWeather(weatherBean)
+                }
+
             }
         }
     }

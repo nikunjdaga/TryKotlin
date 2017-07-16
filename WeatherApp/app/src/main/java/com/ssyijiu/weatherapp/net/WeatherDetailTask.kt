@@ -11,7 +11,7 @@ import com.ssyijiu.weatherapp.net.data.WeatherBean
 class WeatherDetailTask(private val cityId: Long, val date: String,
                         val dataProvider: WeatherProvider = WeatherProvider()) : Task<WeatherBean> {
 
-    override fun execute(): WeatherBean =
+    override fun execute(): WeatherBean? =
         dataProvider.requestWeatherDetail(cityId, date)
 
 }

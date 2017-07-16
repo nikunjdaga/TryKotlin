@@ -9,5 +9,5 @@ package com.ssyijiu.weatherapp.net
 
 
 interface Task<out T> {
-    fun execute(): T
+    fun execute(): T?
 }
