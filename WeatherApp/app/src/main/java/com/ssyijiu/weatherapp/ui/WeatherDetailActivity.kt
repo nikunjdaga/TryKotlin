@@ -44,6 +44,7 @@ class WeatherDetailActivity : AppCompatActivity(),ToolbarManager {
 
             }
         }
+
     }
 
     private fun bindWeather(weatherBean: WeatherBean) {

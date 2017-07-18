@@ -257,26 +257,25 @@
       	toast(bean.date)
     	}
   })
-  ```
-
 
   // 4. 修改 2 为 lambda 形式
   itemView.setOnClickListener {
-    	onItemClickListener.onItemClick(bean)
+  	onItemClickListener.onItemClick(bean)
   }
 
   // 5. 在 OnItemClickListener 中使用重载的 invoke 代替 onItemClick
   interface OnItemClickListener {
-    	operator fun invoke(bean: WeatherBean)
+  	operator fun invoke(bean: WeatherBean)
   }
 
   // 6. 再次修改 2
   itemView.setOnClickListener {
-   	onItemClickListener(bean)
+  	onItemClickListener(bean)
   }
 
   // 7. 删除 OnItemClickListener 接口，将 itemClickListener 直接声明为 lambda 形式
   lateinit var itemClickListener: (WeatherBean) -> Unit
+
   // 我们可以直接将一个函数式接口声明成 lambda 形式
   // WeatherBean 是我们函数式接口的参数、Unit 是函数式接口的返回值
   // 这个函数式接口的方法为 fun invoke(bean : WeatherBean) : Unit
@@ -284,67 +283,67 @@
 
   // 8. 使用
   adapter.setOnItemClickListener {
-    	toast(it.date)
+  	toast(it.date)
   }
 
-  ```
 
-  ​
+  ```
 
 - 完整的 Adapter
 
   ```kotlin
   class WeatherAdapter(val datas: CityBean) : RecyclerView.Adapter<WeatherAdapter.ViewHolder>() {
 
-      // onItemClickListener 是一个 lambda
-      // 这个 lambda 的作用是 [操作一个 WeatherBean，返回 Unit]
-      // 调用方法 onItemClickListener(weatherBean)
-      lateinit var itemClickListener: (WeatherBean) -> Unit
+        // onItemClickListener 是一个 lambda
+        // 这个 lambda 的作用是 [操作一个 WeatherBean，返回 Unit]
+        // 调用方法 onItemClickListener(weatherBean)
+        lateinit var itemClickListener: (WeatherBean) -> Unit
 
-      override fun getItemCount() = datas.size()
+        override fun getItemCount() = datas.size()
 
-      override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 
-          val view = LayoutInflater.from(parent.ctx)
-              .inflate(R.layout.item_forecast, parent, false)
-          return ViewHolder(view, itemClickListener)
-      }
+            val view = LayoutInflater.from(parent.ctx)
+                .inflate(R.layout.item_forecast, parent, false)
+            return ViewHolder(view, itemClickListener)
+        }
 
-      override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-          holder.bindForecast(datas[position])
-      }
+        override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+            holder.bindForecast(datas[position])
+        }
 
 
-      class ViewHolder(itemView: View, val onItemClickListener: (WeatherBean) -> Unit) : RecyclerView.ViewHolder(itemView) {
+        class ViewHolder(itemView: View, val onItemClickListener: (WeatherBean) -> Unit) : RecyclerView.ViewHolder(itemView) {
 
-          fun bindForecast(weather: WeatherBean) {
+            fun bindForecast(weather: WeatherBean) {
 
-              with(weather) {
-                  Picasso.with(itemView.ctx).load(iconUrl).into(itemView.icon)
-                  itemView.date.text = date
-                  itemView.description.text = description
-                  itemView.maxTemperature.text = high.toString()
-                  itemView.minTemperature.text = low.toString()
+                with(weather) {
+                    Picasso.with(itemView.ctx).load(iconUrl).into(itemView.icon)
+                    itemView.date.text = date
+                    itemView.description.text = description
+                    itemView.maxTemperature.text = high.toString()
+                    itemView.minTemperature.text = low.toString()
 
-                  itemView.setOnClickListener {
-                      onItemClickListener.invoke(this)
-                  }
-              }
-          }
-      }
+                    itemView.setOnClickListener {
+                        onItemClickListener.invoke(this)
+                    }
+                }
+            }
+        }
 
-      fun setOnItemClickListener(itemClickListener: (WeatherBean) -> Unit) {
-          this.itemClickListener = itemClickListener
-      }
-  }
+        fun setOnItemClickListener(itemClickListener: (WeatherBean) -> Unit) {
+            this.itemClickListener = itemClickListener
+        }
+    }
 
-  // 在 Activity 中使用
-  val adapter = WeatherAdapter(result)
-    rvWeather.adapter = adapter
-    adapter.setOnItemClickListener {
-      toast(it.date)
-  }
+    // 在 Activity 中使用
+    val adapter = WeatherAdapter(result)
+      rvWeather.adapter = adapter
+      adapter.setOnItemClickListener {
+        toast(it.date)
+    } 
   ```
+
 
 - Lamdbas 的另一种使用方法
 
@@ -1026,6 +1025,7 @@
       hint = "Hint"
       textColor = android.R.color.white
   }
+
   ```
 
   ​

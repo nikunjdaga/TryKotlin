@@ -5,6 +5,7 @@ import android.os.PersistableBundle
 import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
 import com.ssyijiu.weatherapp.R
+import com.ssyijiu.weatherapp.tools.DelegatesExt
 import kotlinx.android.synthetic.main.include_toolbar.*
 
 /**
@@ -13,6 +14,9 @@ import kotlinx.android.synthetic.main.include_toolbar.*
  * Email  : lxmyijiu@163.com
  */
 class SettingsActivity : AppCompatActivity() {
+
+    val zipCode by DelegatesExt.longPreference(ZIP_CODE, DEFAULT_ZIP)
+
     override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
         super.onCreate(savedInstanceState, persistentState)
         setContentView(R.layout.activity_settings)
@@ -28,5 +32,11 @@ class SettingsActivity : AppCompatActivity() {
             }
             else -> false
         }
+
+
+    companion object {
+        val ZIP_CODE = "zipCode"
+        val DEFAULT_ZIP = 94043L
+    }
 
 }

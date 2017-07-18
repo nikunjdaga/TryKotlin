@@ -37,8 +37,3 @@ class NotNullSingleValueVar<T> : ReadWriteProperty<Any?, T> {
     }
 
 }
-
-object DelegatesExt {
-    fun <T> notNullSingleValue():
-        ReadWriteProperty<Any?, T> = NotNullSingleValueVar()
-}
