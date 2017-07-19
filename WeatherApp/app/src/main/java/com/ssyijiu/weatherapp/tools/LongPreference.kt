@@ -1,18 +1,19 @@
 package com.ssyijiu.weatherapp.tools
 
 import android.content.Context
+import android.content.SharedPreferences
 import com.ssyijiu.weatherapp.App
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 
 /**
  * Created by ssyijiu on 2017/7/16.
- * Github : ssyijiu
+ * GitHub : ssyijiu
  * Email  : lxmyijiu@163.com
  */
 class LongPreference(val key: String, val default: Long) : ReadWriteProperty<Any?, Long> {
 
-    val prefs by lazy {
+    val prefs: SharedPreferences by lazy {
         App.instance.getSharedPreferences("LongPreference", Context.MODE_PRIVATE)
     }
 
