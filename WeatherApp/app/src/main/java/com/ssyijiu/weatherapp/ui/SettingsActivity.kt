@@ -1,41 +1,42 @@
 package com.ssyijiu.weatherapp.ui
 
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.support.v7.app.AppCompatActivity
-import android.view.MenuItem
+import android.support.v7.widget.Toolbar
 import com.ssyijiu.weatherapp.R
 import com.ssyijiu.weatherapp.tools.DelegatesExt
+import com.ssyijiu.weatherapp.tools.ToolbarManager
+import com.ssyijiu.weatherapp.tools.showSoftInput
+import com.ssyijiu.weatherapp.tools.toLongSafe
 import kotlinx.android.synthetic.main.activity_settings.*
-import kotlinx.android.synthetic.main.include_toolbar.*
+import org.jetbrains.anko.find
+
 
 /**
  * Created by ssyijiu on 2017/7/16.
  * GitHub : ssyijiu
  * Email  : lxmyijiu@163.com
  */
-class SettingsActivity : AppCompatActivity() {
+class SettingsActivity : AppCompatActivity(), ToolbarManager {
 
-    var cityId :Long by DelegatesExt.longPreference(CITY_ID, DEFAULT_ID)
+    override val toolbar by lazy { find<Toolbar>(R.id.toolbar) }
 
-    override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
-        super.onCreate(savedInstanceState, persistentState)
+    var cityId: Long by DelegatesExt.preference(CITY_ID, DEFAULT_ID)
+
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
 
-        setSupportActionBar(toolbar)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-
-        etCityId.setText(cityId.toString())
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem) =
-        when (item.itemId) {
-            android.R.id.home -> {
-                onBackPressed(); true
-            }
-            else -> false
+        toolbarTitle = "Input City ID"
+        enableHomeAsUp {
+            onBackPressed()
         }
 
+        etCityId.setText(cityId.toString())
+        etCityId.setSelection(etCityId.text.toString().length)
+        etCityId.requestFocus()
+    }
 
     companion object {
         val CITY_ID = "zipCode"
@@ -44,7 +45,19 @@ class SettingsActivity : AppCompatActivity() {
 
     override fun onBackPressed() {
         super.onBackPressed()
-        cityId = etCityId.text.toString().toLong()
+        // 保存 cityId 到 sp 中
+        cityId = etCityId.text.toString().toLongSafe()
     }
 
+
+    override fun onWindowFocusChanged(hasFocus: Boolean) {
+        super.onWindowFocusChanged(hasFocus)
+        if (hasFocus) {
+            currentFocus.showSoftInput()
+        }
+    }
 }
+
+
+
+

@@ -1,5 +1,6 @@
 package com.ssyijiu.weatherapp.net
 
+import com.ssyijiu.library.MLog
 import com.ssyijiu.weatherapp.dao.Db
 import com.ssyijiu.weatherapp.net.data.ApiMapper
 import com.ssyijiu.weatherapp.net.data.CityBean

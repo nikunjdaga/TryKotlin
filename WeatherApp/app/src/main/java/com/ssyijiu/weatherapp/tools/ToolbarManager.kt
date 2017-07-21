@@ -1,21 +1,19 @@
 package com.ssyijiu.weatherapp.tools
 
-import android.icu.text.IDNA
 import android.support.v7.graphics.drawable.DrawerArrowDrawable
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
 import android.view.View
-import com.ssyijiu.library.MLog
 import com.ssyijiu.weatherapp.App
 import com.ssyijiu.weatherapp.R
-import org.jetbrains.anko.AnkoLogger
-import org.jetbrains.anko.info
+import com.ssyijiu.weatherapp.ui.SettingsActivity
+import org.jetbrains.anko.startActivity
 import org.jetbrains.anko.toast
 
 
 /**
  * Created by ssyijiu on 2017/7/13.
- * Github : ssyijiu
+ * GitHub : ssyijiu
  * Email  : lxmyijiu@163.com
  */
 interface ToolbarManager {
@@ -32,7 +30,7 @@ interface ToolbarManager {
         toolbar.inflateMenu(R.menu.menu_main)
         toolbar.setOnMenuItemClickListener {
             when (it.itemId) {
-                R.id.action_settings -> App.instance.toast("Settings")
+                R.id.action_settings -> toolbar.ctx.startActivity<SettingsActivity>()
                 else -> App.instance.toast("Unknown option")
             }
             true
@@ -50,7 +48,7 @@ interface ToolbarManager {
 
     fun attachToScroll(recyclerView: RecyclerView) {
         recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
+            override fun onScrolled(recycler: RecyclerView, dx: Int, dy: Int) {
                 if (dy > 0) toolbar.slideExit() else toolbar.slideEnter()
             }
         })

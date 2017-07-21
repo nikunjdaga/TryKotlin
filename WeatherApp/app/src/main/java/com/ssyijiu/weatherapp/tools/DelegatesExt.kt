@@ -4,7 +4,7 @@ import kotlin.properties.ReadWriteProperty
 
 /**
  * Created by ssyijiu on 2017/7/18.
- * Github : ssyijiu
+ * GitHub : ssyijiu
  * Email  : lxmyijiu@163.com
  */
 
@@ -14,7 +14,7 @@ class DelegatesExt {
         fun <T> notNullSingleValue():
             ReadWriteProperty<Any?, T> = NotNullSingleValueVar()
 
-        fun longPreference(key: String, default: Long) =
-            LongPreference(key, default)
+        fun <T : Any>preference(key: String, default: T) =
+            Preference(key, default)
     }
 }
