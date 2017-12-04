@@ -1,9 +1,0 @@
-<resources>
-
-    <dimen name="toolbar_height">54dp</dimen>
-
-    <dimen name="space_small">2dp</dimen>
-    <dimen name="space_normal">4dp</dimen>
-    <dimen name="space_large">8dp</dimen>
-
-</resources>
